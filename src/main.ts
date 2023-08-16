@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Hello Lead? - API')
+    .setTitle('trikon.re - api')
     .setDescription('Lead Management System + Sales Management CRM')
     .setVersion('1.0')
     .addBearerAuth()
