@@ -13,7 +13,9 @@ export class UpdateAuthDto {
   @ApiProperty()
   display_picture?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['Male', 'Female', 'Non Binary'],
+  })
   gender?: string;
 
   @ApiProperty()

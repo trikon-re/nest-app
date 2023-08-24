@@ -12,7 +12,9 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty()
   username: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['Male', 'Female', 'Non Binary'],
+  })
   gender?: string;
 
   @ApiProperty()
