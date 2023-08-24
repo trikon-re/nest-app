@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { nanoid } from 'nanoid';
-import { extname, join } from 'path';
+import { extname } from 'path';
 
 @Injectable()
 export class AwsService {
