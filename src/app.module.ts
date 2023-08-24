@@ -12,6 +12,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { AccesspointModule } from './accesspoint/accesspoint.module';
 import { AuthModule } from './auth/auth.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { SessionsModule } from './sessions/sessions.module';
     AccesspointModule,
     RolesModule,
     PermissionsModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
