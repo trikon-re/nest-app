@@ -7,20 +7,35 @@ import Pagination from 'src/utils/Pagination';
 import Role from 'src/roles/entities/role.entity';
 import { Op } from 'sequelize';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class EmployeesService {
+  async create_username(name: string) {
+    const id = (await Employee.findOne({ where: { username: name } }))
+      ? `.${nanoid(3)}`
+      : '';
+
+    const username = `${name.toLowerCase().replace(/\s/g, '')}${id}`;
+    while (await Employee.findOne({ where: { username } })) {
+      return this.create_username(name);
+    }
+    return username;
+  }
+
   async create(data: CreateEmployeeDto) {
     try {
       await Employee.create(
         {
           ...data,
+          username: await this.create_username(data.last_name),
         },
         {
           fields: [
             'first_name',
             'last_name',
             'username',
+            'max_session',
             'password',
             'gender',
             'email',
@@ -113,7 +128,7 @@ export class EmployeesService {
     const {
       first_name,
       last_name,
-      username,
+      max_session,
       gender,
       email,
       dob,
@@ -134,7 +149,7 @@ export class EmployeesService {
     await employee.update({
       first_name,
       last_name,
-      username,
+      max_session,
       gender,
       email,
       dob,

@@ -9,8 +9,8 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty()
   last_name: string;
 
-  @ApiProperty()
-  username: string;
+  // @ApiProperty()
+  // username: string;
 
   @ApiProperty({
     enum: ['Male', 'Female', 'Non Binary'],
@@ -32,10 +32,17 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty()
   dob: Date;
 
+  @ApiProperty({
+    default: 2,
+  })
+  max_session: number;
+
   @ApiProperty()
   hired_date: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: 8,
+  })
   work_hour: number;
 
   @ApiProperty()
