@@ -44,6 +44,9 @@ export class CreateEmployeeDto {
   work_hour: number;
 
   @ApiProperty()
+  role_id: number;
+
+  @ApiProperty()
   salary: number;
 
   @ApiProperty()

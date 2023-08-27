@@ -42,6 +42,7 @@ export class EmployeesService {
             'phone',
             'dob',
             'hired_date',
+            'role_id',
             'work_hour',
             'salary',
             'bank',
