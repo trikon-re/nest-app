@@ -188,7 +188,17 @@ export class EmployeesService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  async remove(id: number) {
+    const employee = await Employee.findByPk(id);
+
+    if (!employee) {
+      throw new NotFoundException(`Employee not found`);
+    }
+
+    await employee.destroy();
+
+    return {
+      message: 'Employee deleted successfully',
+    };
   }
 }

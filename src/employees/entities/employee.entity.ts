@@ -62,10 +62,10 @@ class Employee extends Model<Employee> {
   @Column
   'phone': string;
 
-  @Column
+  @Column(DataType.DATEONLY)
   'dob': Date;
 
-  @Column
+  @Column(DataType.DATEONLY)
   'hired_date': Date;
 
   @Default(8)
