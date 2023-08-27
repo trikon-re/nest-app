@@ -9,7 +9,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import Role from './entities/role.entity';
 import Pagination from 'src/utils/Pagination';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 @Injectable()
 export class RolesService {
@@ -54,6 +54,23 @@ export class RolesService {
       await Role.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+        },
+        attributes: {
+          include: [
+            // Count employees and permissions for each role
+            [
+              Sequelize.literal(
+                `(SELECT COUNT(*) FROM employee AS e WHERE e.role_id = Role.id)`,
+              ),
+              'total_employees',
+            ],
+            [
+              Sequelize.literal(
+                '(SELECT COUNT(*) FROM permission AS p WHERE p.role_id = Role.id)',
+              ),
+              'total_permissions',
+            ],
+          ],
         },
         limit,
         offset,
