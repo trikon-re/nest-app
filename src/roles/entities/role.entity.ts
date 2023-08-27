@@ -27,6 +27,9 @@ class Role extends Model<Role> {
   @Column
   'name': string;
 
+  @Column
+  'prefix': string;
+
   @AllowNull
   @Column
   'description': string;

@@ -34,6 +34,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Sequelize CLI
+/config
+
 # Environment Files
 .env
 .env.*

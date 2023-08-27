@@ -1,5 +1,5 @@
 [Unit]
-Description=nestjs-app for api
+Description=trikon api
 After=network.target
 [Service]
 WorkingDirectory={{WORKING_DIRECTORY_HERE}}

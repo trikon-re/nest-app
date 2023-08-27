@@ -9,7 +9,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import Role from './entities/role.entity';
 import Pagination from 'src/utils/Pagination';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 @Injectable()
 export class RolesService {
@@ -20,7 +20,7 @@ export class RolesService {
           ...createRoleDto,
         },
         {
-          fields: ['name', 'description'],
+          fields: ['name', 'description', 'prefix'],
         },
       );
       return {
@@ -55,6 +55,23 @@ export class RolesService {
         where: {
           [Op.or]: search_ops,
         },
+        attributes: {
+          include: [
+            // Count employees and permissions for each role
+            [
+              Sequelize.literal(
+                `(SELECT COUNT(*) FROM employee AS e WHERE e.role_id = Role.id)`,
+              ),
+              'total_employees',
+            ],
+            [
+              Sequelize.literal(
+                '(SELECT COUNT(*) FROM permission AS p WHERE p.role_id = Role.id)',
+              ),
+              'total_permissions',
+            ],
+          ],
+        },
         limit,
         offset,
         paranoid,
@@ -65,9 +82,9 @@ export class RolesService {
   async findOne(id: number) {
     {
       const role = await Role.findByPk(id, {
-        attributes: {
-          exclude: ['password'],
-        },
+        // attributes: {
+        //   exclude: ['password'],
+        // },
       });
 
       if (!role) {
@@ -84,7 +101,7 @@ export class RolesService {
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     try {
-      const { name, description } = updateRoleDto;
+      const { name, description, prefix } = updateRoleDto;
 
       const role = await Role.findByPk(id, {});
 
@@ -94,6 +111,7 @@ export class RolesService {
 
       await role.update({
         name,
+        prefix,
         description,
       });
 
