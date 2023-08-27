@@ -27,7 +27,9 @@ export class CreateEmployeeDto {
   @ApiProperty()
   phone: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    format: 'date',
+  })
   dob: Date;
 
   @ApiProperty({
@@ -35,7 +37,9 @@ export class CreateEmployeeDto {
   })
   max_session: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    format: 'date',
+  })
   hired_date: Date;
 
   @ApiProperty({
