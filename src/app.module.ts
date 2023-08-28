@@ -15,6 +15,8 @@ import { SessionsModule } from './sessions/sessions.module';
 import { AwsModule } from './aws/aws.module';
 import { MediaModule } from './media/media.module';
 import { LeadStatusModule } from './lead_status/lead_status.module';
+import { LeadsModule } from './leads/leads.module';
+import { AssetsModule } from './assets/assets.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { LeadStatusModule } from './lead_status/lead_status.module';
     AwsModule,
     MediaModule,
     LeadStatusModule,
+    LeadsModule,
+    AssetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
