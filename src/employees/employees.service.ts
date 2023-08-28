@@ -96,7 +96,7 @@ export class EmployeesService {
         include: {
           model: Role,
           as: 'role',
-          attributes: ['id', 'name'],
+          attributes: ['id', 'name', 'prefix'],
         },
         attributes: {
           exclude: ['password', 'role_id'],
@@ -110,6 +110,11 @@ export class EmployeesService {
 
   async findOne(id: number) {
     const employee = await Employee.findByPk(id, {
+      include: {
+        model: Role,
+        as: 'role',
+        attributes: ['id', 'name', 'prefix'],
+      },
       attributes: {
         exclude: ['password'],
       },

@@ -3,6 +3,8 @@ import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Asset from './entities/asset.entity';
+import Pagination from 'src/utils/Pagination';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class AssetsService {
@@ -29,7 +31,33 @@ export class AssetsService {
   }
 
   async findAll(query: IPaginationQuery) {
-    return `This action returns all assets`;
+    const pagination = new Pagination(query);
+
+    // get query from pagination
+    const { limit, offset, paranoid } = pagination.get_attributes();
+
+    const search_ops = pagination.get_search_ops([
+      'address.line1',
+      'address.line2',
+      'address.plot',
+      'address.road',
+      'address.sector',
+      'address.block',
+      'address.area',
+      'address.city',
+      'address.country',
+    ]);
+
+    return pagination.arrange(
+      await Asset.findAndCountAll({
+        where: {
+          [Op.or]: search_ops,
+        },
+        limit,
+        offset,
+        paranoid,
+      }),
+    );
   }
 
   async findOne(id: number) {
