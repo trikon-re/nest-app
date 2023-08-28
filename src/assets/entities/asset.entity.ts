@@ -10,8 +10,8 @@ import {
   DeletedAt,
   ForeignKey,
   AllowNull,
-  IsEmail,
-  Default,
+  BeforeUpdate,
+  BeforeCreate,
 } from 'sequelize-typescript';
 import Media from 'src/media/entities/media.entity';
 
@@ -30,18 +30,7 @@ class Asset extends Model<Asset> {
   @Column
   'size': number;
 
-  @Column({
-    type: DataType.STRING,
-    set() {
-      this.setDataValue(
-        'sizeUnit',
-        this.getDataValue('type') === 'FLAT' ? 'SQFT' : 'KATHA',
-      );
-    },
-    get() {
-      return this.getDataValue('type') === 'FLAT' ? 'SQFT' : 'KATHA';
-    },
-  })
+  @Column
   'size_unit': string;
 
   @Column
@@ -56,37 +45,84 @@ class Asset extends Model<Asset> {
   @Column
   'media_commision': number;
 
-  @Column({
-    type: DataType.JSON,
-  })
-  'address': {
-    line1: string;
-    line2: string;
-    plot: string;
-    road: string;
-    sector: string;
-    block: string;
-    area: string;
-    city: string;
-    country: string;
-  };
+  @Column
+  'address.line1': string;
 
-  @Column({
-    type: DataType.JSON,
-  })
-  'flat': {
-    floor: number;
-    apt_no: string;
-    house_no: string;
-    num_bathroom: number;
-    num_bedroom: number;
-    num_balcony: number;
-    has_parking: boolean;
-    has_lift: boolean;
-    facing_side: string;
-    is_used: boolean;
-    handovered_at: Date;
-  };
+  @AllowNull
+  @Column
+  'address.line2': string;
+
+  @AllowNull
+  @Column
+  'address.plot': string;
+
+  @AllowNull
+  @Column
+  'address.road': string;
+
+  @AllowNull
+  @Column
+  'address.sector': string;
+
+  @AllowNull
+  @Column
+  'address.block': string;
+
+  @AllowNull
+  @Column
+  'address.area': string;
+
+  @AllowNull
+  @Column
+  'address.city': string;
+
+  @AllowNull
+  @Column
+  'address.country': string;
+
+  @AllowNull
+  @Column
+  'flat.floor': number;
+
+  @AllowNull
+  @Column
+  'flat.apt_no': string;
+
+  @AllowNull
+  @Column
+  'flat.house_no': string;
+
+  @AllowNull
+  @Column
+  'flat.num_bathroom': number;
+
+  @AllowNull
+  @Column
+  'flat.num_bedroom': number;
+
+  @AllowNull
+  @Column
+  'flat.num_balcony': number;
+
+  @AllowNull
+  @Column
+  'flat.has_parking': boolean;
+
+  @AllowNull
+  @Column
+  'flat.has_lift': boolean;
+
+  @AllowNull
+  @Column
+  'flat.facing_side': string;
+
+  @AllowNull
+  @Column
+  'flat.is_used': boolean;
+
+  @AllowNull
+  @Column
+  'flat.handovered_at': Date;
 
   @CreatedAt
   @Column({ field: 'created_at' })
@@ -99,6 +135,18 @@ class Asset extends Model<Asset> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   'deleted_at': Date;
+
+  //hooks
+  @BeforeUpdate
+  @BeforeCreate
+  static async setSizeUnit(instance: Asset) {
+    if (instance.changed('type')) {
+      instance.setDataValue(
+        'size_unit',
+        instance.getDataValue('type') === 'FLAT' ? 'SQFT' : 'KATHA',
+      );
+    }
+  }
 }
 
 export default Asset;

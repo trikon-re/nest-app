@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
+import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 
 @Injectable()
 export class LeadsService {
-  create(createLeadDto: CreateLeadDto) {
+  async create(createLeadDto: CreateLeadDto) {
     return 'This action adds a new lead';
   }
 
-  findAll() {
+  async findAll(query: IPaginationQuery) {
     return `This action returns all leads`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} lead`;
   }
 
-  update(id: number, updateLeadDto: UpdateLeadDto) {
+  async update(id: number, updateLeadDto: UpdateLeadDto) {
     return `This action updates a #${id} lead`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} lead`;
   }
 }
