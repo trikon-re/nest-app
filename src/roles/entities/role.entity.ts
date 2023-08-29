@@ -24,9 +24,11 @@ class Role extends Model<Role> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
   'name': string;
 
+  @AllowNull(false)
   @Column
   'prefix': string;
 

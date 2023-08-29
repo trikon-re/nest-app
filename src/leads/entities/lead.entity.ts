@@ -12,6 +12,7 @@ import {
   AllowNull,
   IsEmail,
   Default,
+  BelongsTo,
 } from 'sequelize-typescript';
 import Employee from 'src/employees/entities/employee.entity';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
@@ -26,9 +27,11 @@ class Lead extends Model<Lead> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
   'first_name': string;
 
+  @AllowNull(false)
   @Column
   'last_name': string;
 
@@ -37,12 +40,15 @@ class Lead extends Model<Lead> {
   @Column
   'email': string;
 
+  @AllowNull(false)
   @Column
   'phone': string;
 
+  @AllowNull(false)
   @Column(DataType.ENUM('Male', 'Female', 'Non Binary'))
   'gender': string;
 
+  @AllowNull(false)
   @Column
   'address_line1': string;
 
@@ -58,6 +64,7 @@ class Lead extends Model<Lead> {
   @Column
   'designation': string;
 
+  @AllowNull(false)
   @Default('MEDIUM')
   @Column(DataType.ENUM('HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'))
   'priority': string;
@@ -66,6 +73,9 @@ class Lead extends Model<Lead> {
   @AllowNull
   @Column(DataType.BIGINT)
   'media_id': number;
+
+  @BelongsTo(() => Media)
+  'media': Media;
 
   @AllowNull
   @Column
@@ -76,9 +86,16 @@ class Lead extends Model<Lead> {
   @Column(DataType.BIGINT)
   'assigned_to': number;
 
+  @BelongsTo(() => Employee)
+  'assignee': Employee;
+
+  @AllowNull(false)
   @ForeignKey(() => LeadStatus)
   @Column(DataType.BIGINT)
-  'status': number;
+  'status_id': number;
+
+  @BelongsTo(() => LeadStatus)
+  'status': LeadStatus;
 
   @CreatedAt
   @Column({ field: 'created_at' })

@@ -12,7 +12,10 @@ import { nanoid } from 'nanoid';
 @Injectable()
 export class EmployeesService {
   async create_username(name: string) {
-    const id = (await Employee.findOne({ where: { username: name } }))
+    const id = (await Employee.findOne({
+      where: { username: name },
+      paranoid: false,
+    }))
       ? `.${nanoid(3)}`
       : '';
 
@@ -58,7 +61,7 @@ export class EmployeesService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          error: 'Failed to create employee',
+          error: error?.errors?.[0]?.message || error,
         },
         HttpStatus.BAD_REQUEST,
         {

@@ -24,7 +24,7 @@ class Session extends Model<Session> {
   'id': number;
 
   @ForeignKey(() => Employee)
-  @AllowNull
+  @AllowNull(false)
   @Column(DataType.BIGINT)
   'user_id': number;
 

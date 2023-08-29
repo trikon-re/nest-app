@@ -21,9 +21,11 @@ class Media extends Model<Media> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
   'first_name': string;
 
+  @AllowNull(false)
   @Column
   'last_name': string;
 
@@ -32,15 +34,19 @@ class Media extends Model<Media> {
   @Column
   'email': string;
 
+  @AllowNull(false)
   @Column
   'phone': string;
 
+  @AllowNull(false)
   @Column(DataType.ENUM('Male', 'Female', 'Non Binary'))
   'gender': string;
 
+  @AllowNull(false)
   @Column(DataType.DATEONLY)
   'dob': Date;
 
+  @AllowNull(false)
   @Column
   'address_line1': string;
 

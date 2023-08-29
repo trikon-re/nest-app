@@ -21,12 +21,15 @@ class LeadStatus extends Model<LeadStatus> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
   'label': string;
 
+  @AllowNull(false)
   @Column
   'value': string;
 
+  @AllowNull(false)
   @Column
   'color': string;
 

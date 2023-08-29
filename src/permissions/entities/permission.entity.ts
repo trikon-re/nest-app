@@ -24,6 +24,7 @@ class Permission extends Model<Permission> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column(DataType.ENUM('create', 'read', 'update', 'delete'))
   'type': string;
 
@@ -41,7 +42,7 @@ class Permission extends Model<Permission> {
 
   // Relations between tables
   @ForeignKey(() => Role)
-  @AllowNull
+  @AllowNull(false)
   @Column(DataType.BIGINT)
   'role_id': number;
 
@@ -49,7 +50,7 @@ class Permission extends Model<Permission> {
   'role': Role;
 
   @ForeignKey(() => AccessPoint)
-  @AllowNull
+  @AllowNull(false)
   @Column(DataType.BIGINT)
   'access_point_id': number;
 

@@ -32,13 +32,16 @@ class Employee extends Model<Employee> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column
   'first_name': string;
 
+  @AllowNull(false)
   @Column
   'last_name': string;
 
   @Unique
+  @AllowNull(false)
   @Column
   'username': string;
 
@@ -46,6 +49,7 @@ class Employee extends Model<Employee> {
   @Column
   'password': string;
 
+  @AllowNull(false)
   @Column(DataType.ENUM('Male', 'Female', 'Non Binary'))
   'gender': string;
 
@@ -59,12 +63,15 @@ class Employee extends Model<Employee> {
   'email': string;
 
   @Unique
+  @AllowNull(false)
   @Column
   'phone': string;
 
+  @AllowNull(false)
   @Column(DataType.DATEONLY)
   'dob': Date;
 
+  @AllowNull(false)
   @Column(DataType.DATEONLY)
   'hired_date': Date;
 
@@ -76,6 +83,7 @@ class Employee extends Model<Employee> {
   @Column
   'salary': number;
 
+  @AllowNull(false)
   @Column
   'bank': string;
 

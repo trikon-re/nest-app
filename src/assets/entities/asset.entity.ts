@@ -24,15 +24,19 @@ class Asset extends Model<Asset> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @AllowNull(false)
   @Column(DataType.ENUM('FLAT', 'LAND'))
   'type': string;
 
+  @AllowNull(false)
   @Column
   'size': number;
 
+  @AllowNull(false)
   @Column
   'size_unit': string;
 
+  @AllowNull(false)
   @Column
   'price': number;
 
@@ -45,6 +49,7 @@ class Asset extends Model<Asset> {
   @Column
   'media_commision': number;
 
+  @AllowNull(false)
   @Column
   'address.line1': string;
 

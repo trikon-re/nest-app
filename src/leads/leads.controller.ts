@@ -34,14 +34,36 @@ export class LeadsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'priority',
+    type: 'string',
+    enum: ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'],
+    required: false,
+  })
+  @ApiQuery({
+    name: 'gender',
+    type: 'string',
+    enum: ['Male', 'Female', 'Non Binary'],
+    required: false,
+  })
+  @ApiQuery({
+    name: 'status_id',
+    type: 'number',
+    required: false,
+  })
   // Pagination Queries
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(@Query() query: IPaginationQuery) {
-    return this.leadsService.findAll(query);
+  findAll(
+    @Query() query: IPaginationQuery,
+    @Query('gender') gender?: string,
+    @Query('priority') priority?: string,
+    @Query('status_id') status_id?: number,
+  ) {
+    return this.leadsService.findAll(query, gender, priority, status_id);
   }
 
   @Get(':id')
