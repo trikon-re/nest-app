@@ -38,6 +38,7 @@ export class EmployeesService {
             'first_name',
             'last_name',
             'username',
+            'display_picture',
             'max_session',
             'password',
             'gender',
@@ -50,6 +51,8 @@ export class EmployeesService {
             'salary',
             'bank',
             'address',
+            'address2',
+            'cv',
           ],
         },
       );
@@ -83,6 +86,9 @@ export class EmployeesService {
       'last_name',
       'username',
       'phone',
+      'email',
+      'address',
+      'address2',
     ]);
 
     // get filter props
@@ -147,6 +153,9 @@ export class EmployeesService {
       salary,
       bank,
       address,
+      address2,
+      cv,
+      display_picture,
     } = updateEmployeeDto;
 
     const employee = await Employee.findByPk(id, {});
@@ -168,6 +177,9 @@ export class EmployeesService {
       role_id,
       bank,
       address,
+      address2,
+      cv,
+      display_picture,
     });
 
     return {

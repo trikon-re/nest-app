@@ -18,10 +18,14 @@ export class CreateEmployeeDto {
   @ApiProperty()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   display_picture: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   email: string;
 
   @ApiProperty()
@@ -44,20 +48,35 @@ export class CreateEmployeeDto {
 
   @ApiProperty({
     default: 8,
+    required: false,
   })
   work_hour: number;
 
   @ApiProperty()
   role_id: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   salary: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   bank: string;
 
   @ApiProperty()
   address: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  address2: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  cv: string;
 
   //   @ApiProperty()
   //   is_active: boolean;

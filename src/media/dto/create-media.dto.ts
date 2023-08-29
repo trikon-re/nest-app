@@ -9,13 +9,19 @@ export class CreateMediaDto {
 
   @ApiProperty({
     enum: ['Male', 'Female', 'Non Binary'],
+    default: 'Non Binary',
+    required: false,
   })
   gender?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   display_picture: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   email: string;
 
   @ApiProperty()
@@ -23,12 +29,15 @@ export class CreateMediaDto {
 
   @ApiProperty({
     format: 'date',
+    required: true,
   })
   dob: Date;
 
   @ApiProperty()
   address_line1: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   address_line2: string;
 }

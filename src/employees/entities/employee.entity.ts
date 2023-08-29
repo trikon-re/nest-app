@@ -91,6 +91,14 @@ class Employee extends Model<Employee> {
   @Column
   'address': string;
 
+  @AllowNull
+  @Column
+  'address2': string;
+
+  @AllowNull
+  @Column
+  'cv': string;
+
   @Default(2)
   @Column
   'max_session': number;

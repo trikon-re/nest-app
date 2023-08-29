@@ -3,10 +3,14 @@ import { CreateEmployeeDto } from './create-employee.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   first_name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   last_name: string;
 
   // @ApiProperty()
@@ -17,44 +21,67 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   })
   gender?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   role_id: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   display_picture: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   email: string;
-
-  @ApiProperty()
-  phone: string;
 
   @ApiProperty({
     format: 'date',
+    required: false,
   })
   dob: Date;
 
   @ApiProperty({
     default: 2,
+    required: false,
   })
   max_session: number;
 
   @ApiProperty({
     format: 'date',
+    required: false,
   })
   hired_date: Date;
 
   @ApiProperty({
     default: 8,
+    required: false,
   })
   work_hour: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   salary: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   bank: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   address: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  address2: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  cv: string;
 }
