@@ -150,6 +150,8 @@ class Asset extends Model<Asset> {
         'size_unit',
         instance.getDataValue('type') === 'FLAT' ? 'SQFT' : 'KATHA',
       );
+
+      console.log('hello');
     }
   }
 }

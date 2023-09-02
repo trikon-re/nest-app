@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
@@ -9,25 +13,30 @@ import { Op } from 'sequelize';
 @Injectable()
 export class AssetsService {
   async create(createAssetDto: CreateAssetDto) {
-    const {
-      type,
-      size,
-      price,
-      media_id,
-      media_commision,
-      ...address_and_flat
-    } = createAssetDto;
+    try {
+      const {
+        type,
+        size,
+        price,
+        media_id,
+        media_commision,
+        ...address_and_flat
+      } = createAssetDto;
 
-    await Asset.create({
-      type,
-      size,
-      price,
-      media_id,
-      media_commision,
-      ...address_and_flat,
-    });
+      await Asset.create({
+        type,
+        size,
+        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        price,
+        media_id,
+        media_commision,
+        ...address_and_flat,
+      });
 
-    return { message: 'Asset created successfully' };
+      return { message: 'Asset created successfully' };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
+    }
   }
 
   async findAll(query: IPaginationQuery) {
@@ -71,31 +80,36 @@ export class AssetsService {
   }
 
   async update(id: number, updateAssetDto: UpdateAssetDto) {
-    const asset = await Asset.findByPk(id);
+    try {
+      const asset = await Asset.findByPk(id);
 
-    if (!asset) {
-      throw new NotFoundException('Asset not found');
+      if (!asset) {
+        throw new NotFoundException('Asset not found');
+      }
+
+      const {
+        type,
+        size,
+        price,
+        media_id,
+        media_commision,
+        ...address_and_flat
+      } = updateAssetDto;
+
+      await asset.update({
+        type,
+        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        size,
+        price,
+        media_id,
+        media_commision,
+        ...address_and_flat,
+      });
+
+      return { message: 'Asset updated successfully' };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
     }
-
-    const {
-      type,
-      size,
-      price,
-      media_id,
-      media_commision,
-      ...address_and_flat
-    } = updateAssetDto;
-
-    await asset.update({
-      type,
-      size,
-      price,
-      media_id,
-      media_commision,
-      ...address_and_flat,
-    });
-
-    return { message: 'Asset updated successfully' };
   }
 
   async remove(id: number) {
