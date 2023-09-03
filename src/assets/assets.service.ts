@@ -43,7 +43,8 @@ export class AssetsService {
     const pagination = new Pagination(query);
 
     // get query from pagination
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops([
       'address.line1',
@@ -61,6 +62,7 @@ export class AssetsService {
       await Asset.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+          ...trash_query,
         },
         limit,
         offset,

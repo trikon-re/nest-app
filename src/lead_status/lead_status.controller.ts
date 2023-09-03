@@ -20,6 +20,7 @@ import {
   SearchQuery,
   ShowParanoidQuery,
   SortQuery,
+  TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
 
 @ApiTags('Lead')
@@ -42,6 +43,7 @@ export class LeadStatusController {
     required: false,
   })
   // Pagination Queries
+  @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)

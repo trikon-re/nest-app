@@ -45,7 +45,8 @@ export class RolesService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     // get search object
     const search_ops = pagination.get_search_ops(['name']);
@@ -54,6 +55,7 @@ export class RolesService {
       await Role.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+          ...trash_query,
         },
         attributes: {
           include: [

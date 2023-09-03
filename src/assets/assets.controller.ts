@@ -20,6 +20,7 @@ import {
   SearchQuery,
   ShowParanoidQuery,
   SortQuery,
+  TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
 
 @ApiTags('Assets')
@@ -35,6 +36,7 @@ export class AssetsController {
 
   @Get()
   // Pagination Queries
+  @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
   @ApiQuery(SortQuery)
   @ApiQuery(PageQuery)

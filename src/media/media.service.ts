@@ -43,7 +43,8 @@ export class MediaService {
     const pagination = new Pagination(query);
 
     // get query from pagination
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops([
       'first_name',
@@ -61,6 +62,7 @@ export class MediaService {
         where: {
           [Op.or]: search_ops,
           ...filters,
+          ...trash_query,
         },
         paranoid,
         limit,

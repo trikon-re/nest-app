@@ -9,8 +9,6 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import Permission from './entities/permission.entity';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Pagination from 'src/utils/Pagination';
-import { Op } from 'sequelize';
-import Role from 'src/roles/entities/role.entity';
 
 @Injectable()
 export class PermissionsService {
@@ -46,7 +44,8 @@ export class PermissionsService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid } = pagination.get_attributes();
+    const { limit, offset, paranoid, trash_query } =
+      pagination.get_attributes();
 
     // get filter props
     const filters = pagination.format_filters({
@@ -58,6 +57,7 @@ export class PermissionsService {
       await Permission.findAndCountAll({
         where: {
           ...filters,
+          ...trash_query,
         },
         // include: {
         //   model: Role,
