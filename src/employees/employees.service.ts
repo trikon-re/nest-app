@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -129,6 +133,7 @@ export class EmployeesService {
       attributes: {
         exclude: ['password'],
       },
+      paranoid: false,
     });
 
     if (!employee) {
@@ -210,11 +215,27 @@ export class EmployeesService {
     }
   }
 
-  async remove(id: number) {
-    const employee = await Employee.findByPk(id);
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const employee = await Employee.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!employee) {
       throw new NotFoundException(`Employee not found`);
+    }
+
+    if (permanent) {
+      employee.destroy({ force: true });
+      return {
+        message: `Employee deleted permanently.`,
+      };
+    } else if (restore) {
+      if (employee.deleted_at === null)
+        throw new BadRequestException(`Employee not deleted`);
+      employee.restore();
+      return {
+        message: 'Employee restored successfully',
+      };
     }
 
     await employee.destroy();

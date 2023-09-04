@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import Pagination from 'src/utils/Pagination';
 import Session from './entities/session.entity';
 import Employee from 'src/employees/entities/employee.entity';
@@ -71,9 +76,32 @@ export class SessionsService {
   }
 
   // Delete Session
-  async remove(id: number) {
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
     // find session
-    const session = await Session.findByPk(id);
+    const session = await Session.findByPk(id, {
+      paranoid: false,
+    });
+
+    // check if session exists
+    if (!session) throw new NotFoundException('This session does not exist.');
+
+    if (permanent) {
+      session.destroy({ force: true });
+      return {
+        message: `Session deleted permanently.`,
+      };
+    } else if (restore) {
+      if (session.deleted_at === null)
+        throw new BadRequestException('This session is not deleted.');
+      session.restore();
+      return {
+        message: `Session restored successfully.`,
+      };
+    }
+
+    // check if session is already deleted
+    if (session?.deleted_at !== null)
+      throw new UnauthorizedException('This session is already deleted.');
 
     // check if already logged out
     if (session?.logged_out_at === null) {

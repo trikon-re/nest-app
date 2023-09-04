@@ -23,7 +23,7 @@ import {
   TrashQuery,
 } from 'src/utils/Pagination/dto/query.dto';
 
-@ApiTags('Leads')
+@ApiTags('Lead')
 @Controller('leads')
 export class LeadsController {
   constructor(private readonly leadsService: LeadsService) {}
@@ -79,7 +79,21 @@ export class LeadsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.leadsService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.leadsService.remove(+id, permanent, restore);
   }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
@@ -72,7 +76,9 @@ export class MediaService {
   }
 
   async findOne(id: number) {
-    const media = await Media.findByPk(id);
+    const media = await Media.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!media) {
       throw new NotFoundException(`Media not found`);
@@ -120,11 +126,28 @@ export class MediaService {
     };
   }
 
-  async remove(id: number) {
-    const media = await Media.findByPk(id);
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const media = await Media.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!media) {
       throw new NotFoundException(`Media not found`);
+    }
+
+    if (permanent) {
+      await media.destroy({ force: true });
+      return {
+        message: 'Media deleted permanently',
+      };
+    } else if (restore) {
+      if (media.deleted_at === null) {
+        throw new BadRequestException(`Media not deleted`);
+      }
+      media.restore();
+      return {
+        message: 'Media restored successfully',
+      };
     }
 
     await media.destroy();

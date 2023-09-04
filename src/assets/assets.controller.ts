@@ -57,7 +57,21 @@ export class AssetsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assetsService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.assetsService.remove(+id, permanent, restore);
   }
 }

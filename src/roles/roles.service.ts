@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -87,6 +88,7 @@ export class RolesService {
         // attributes: {
         //   exclude: ['password'],
         // },
+        paranoid: false,
       });
 
       if (!role) {
@@ -105,7 +107,9 @@ export class RolesService {
     try {
       const { name, description, prefix } = updateRoleDto;
 
-      const role = await Role.findByPk(id, {});
+      const role = await Role.findByPk(id, {
+        paranoid: false,
+      });
 
       if (!role) {
         throw new NotFoundException(`Role with id ${id} not found`);
@@ -135,12 +139,28 @@ export class RolesService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
     const role = await Role.findByPk(id, {
       include: ['assigned_employees', 'assigned_permissions'],
+      paranoid: false,
     });
 
     if (!role) throw new NotFoundException('No role found!');
+
+    if (permanent) {
+      role.destroy({ force: true });
+      return {
+        message: `Role deleted permanently.`,
+      };
+    } else if (restore) {
+      if (role.deleted_at === null)
+        throw new BadRequestException('Role is not deleted!');
+
+      role.restore();
+      return {
+        message: `Role restored successfully.`,
+      };
+    }
 
     // Delete all associated employees and permissions
     await role.$get('assigned_employees');

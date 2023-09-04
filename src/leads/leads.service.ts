@@ -165,6 +165,7 @@ export class LeadsService {
           ],
         },
       ],
+      paranoid: false,
     });
 
     if (!lead) {
@@ -214,11 +215,23 @@ export class LeadsService {
     return { message: 'Lead updated successfully' };
   }
 
-  async remove(id: number) {
-    const lead = await Lead.findByPk(id);
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const lead = await Lead.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!lead) {
       throw new NotFoundException('Lead not found');
+    }
+
+    if (permanent) {
+      await lead.destroy({ force: true });
+      return { message: 'Lead deleted permanently' };
+    } else if (restore) {
+      if (lead.deleted_at === null)
+        throw new BadRequestException('Lead is not deleted');
+      lead.restore();
+      return { message: 'Lead restored successfully' };
     }
 
     await lead.destroy();

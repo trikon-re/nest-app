@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateLeadStatusDto } from './dto/create-lead_status.dto';
 import { UpdateLeadStatusDto } from './dto/update-lead_status.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
@@ -53,7 +57,7 @@ export class LeadStatusService {
   }
 
   async findOne(id: number) {
-    const leadStatus = await LeadStatus.findByPk(id);
+    const leadStatus = await LeadStatus.findByPk(id, { paranoid: false });
 
     if (!leadStatus) {
       throw new NotFoundException(`Lead Status not found`);
@@ -87,11 +91,28 @@ export class LeadStatusService {
     };
   }
 
-  async remove(id: number) {
-    const leadStatus = await LeadStatus.findByPk(id);
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const leadStatus = await LeadStatus.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!leadStatus) {
       throw new NotFoundException(`Lead Status not found`);
+    }
+
+    if (permanent) {
+      await leadStatus.destroy({ force: true });
+      return {
+        message: 'Lead Status deleted permanently',
+      };
+    } else if (restore) {
+      if (leadStatus.deleted_at === null) {
+        throw new BadRequestException('Lead Status is not deleted');
+      }
+      leadStatus.restore();
+      return {
+        message: 'Lead Status restored successfully',
+      };
     }
 
     await leadStatus.destroy();

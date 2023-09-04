@@ -72,7 +72,9 @@ export class AssetsService {
   }
 
   async findOne(id: number) {
-    const asset = await Asset.findByPk(id);
+    const asset = await Asset.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!asset) {
       throw new NotFoundException('Asset not found');
@@ -114,11 +116,24 @@ export class AssetsService {
     }
   }
 
-  async remove(id: number) {
-    const asset = await Asset.findByPk(id);
+  async remove(id: number, permanent?: boolean, restore?: boolean) {
+    const asset = await Asset.findByPk(id, {
+      paranoid: false,
+    });
 
     if (!asset) {
       throw new NotFoundException('Asset not found');
+    }
+
+    if (permanent) {
+      await asset.destroy({ force: true });
+      return { message: 'Asset deleted permanently' };
+    } else if (restore) {
+      if (asset.deleted_at === null) {
+        throw new BadRequestException('Asset is not deleted');
+      }
+      asset.restore();
+      return { message: 'Asset restored successfully' };
     }
 
     await asset.destroy();

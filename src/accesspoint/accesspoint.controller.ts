@@ -12,7 +12,7 @@ import {
 import { AccesspointService } from './accesspoint.service';
 import { CreateAccesspointDto } from './dto/create-accesspoint.dto';
 import { UpdateAccesspointDto } from './dto/update-accesspoint.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
   IPaginationQuery,
   LimitQuery,
@@ -60,7 +60,21 @@ export class AccesspointController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accesspointService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.accesspointService.remove(+id, permanent, restore);
   }
 }

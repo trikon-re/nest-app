@@ -77,7 +77,21 @@ export class EmployeesController {
 
   // @ApiOperation({ deprecated: true })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.employeesService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.employeesService.remove(+id, permanent, restore);
   }
 }

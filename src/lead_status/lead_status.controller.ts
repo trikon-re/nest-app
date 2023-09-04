@@ -67,7 +67,21 @@ export class LeadStatusController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.leadStatusService.remove(+id);
+  @ApiQuery({
+    name: 'permanent',
+    type: 'boolean',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'restore',
+    type: 'boolean',
+    required: false,
+  })
+  remove(
+    @Param('id') id: string,
+    @Query('permanent') permanent?: boolean,
+    @Query('restore') restore?: boolean,
+  ) {
+    return this.leadStatusService.remove(+id, permanent, restore);
   }
 }
