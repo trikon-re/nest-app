@@ -87,6 +87,14 @@ class Employee extends Model<Employee> {
   @Column
   'bank': string;
 
+  @AllowNull(true)
+  @Column
+  'nid_number': string;
+
+  @AllowNull(true)
+  @Column
+  'nid_attachment': string;
+
   @AllowNull
   @Column
   'address': string;

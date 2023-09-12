@@ -54,6 +54,8 @@ export class EmployeesService {
             'work_hour',
             'salary',
             'bank',
+            'nid_number',
+            'nid_attachment',
             'address',
             'address2',
             'cv',
@@ -94,6 +96,7 @@ export class EmployeesService {
       'email',
       'address',
       'address2',
+      'nid_number',
     ]);
 
     // get filter props
@@ -159,6 +162,8 @@ export class EmployeesService {
       work_hour,
       salary,
       bank,
+      nid_number,
+      nid_attachment,
       address,
       address2,
       cv,
@@ -183,6 +188,8 @@ export class EmployeesService {
       salary,
       role_id,
       bank,
+      nid_number,
+      nid_attachment,
       address,
       address2,
       cv,

@@ -65,6 +65,16 @@ export class CreateEmployeeDto {
   })
   bank: string;
 
+  @ApiProperty({
+    required: false,
+  })
+  nid_number: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  nid_attachment: string;
+
   @ApiProperty()
   address: string;
 
