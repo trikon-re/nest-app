@@ -194,6 +194,7 @@ export class LeadsService {
       priority,
       media_id,
       media_commision,
+      assigned_to,
       gender,
     } = updateLeadDto;
 
@@ -209,6 +210,7 @@ export class LeadsService {
       priority,
       media_id,
       media_commision,
+      assigned_to,
       gender,
     });
 
