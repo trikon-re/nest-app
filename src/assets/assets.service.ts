@@ -17,6 +17,7 @@ export class AssetsService {
       const {
         type,
         size,
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -26,7 +27,7 @@ export class AssetsService {
       await Asset.create({
         type,
         size,
-        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -107,6 +108,7 @@ export class AssetsService {
       const {
         type,
         size,
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -115,7 +117,7 @@ export class AssetsService {
 
       await asset.update({
         type,
-        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        size_unit,
         size,
         price,
         media_id,

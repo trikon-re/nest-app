@@ -9,6 +9,11 @@ export class CreateAssetDto {
   @ApiProperty()
   size: number;
 
+  @ApiProperty({
+    enum: ['SQFT', 'KATHA', 'BIGHA', 'ACRES', 'SHOTOK', 'DECIMAL'],
+  })
+  size_unit: string;
+
   @ApiProperty()
   price: number;
 
