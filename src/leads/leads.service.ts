@@ -249,7 +249,10 @@ export class LeadsService {
 
     return {
       message: 'Interested properties found',
-      data: (await lead.$get('interested_properties')) || [],
+      data:
+        (await lead.$get('interested_properties', {
+          raw: true,
+        })) || [],
     };
   }
 

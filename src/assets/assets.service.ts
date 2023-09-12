@@ -85,6 +85,7 @@ export class AssetsService {
         limit,
         offset,
         paranoid,
+        raw: true,
       }),
     );
   }
