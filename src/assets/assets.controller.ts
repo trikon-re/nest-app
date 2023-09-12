@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Body,
   Patch,
   Param,
@@ -73,5 +74,10 @@ export class AssetsController {
     @Query('restore') restore?: boolean,
   ) {
     return this.assetsService.remove(+id, permanent, restore);
+  }
+
+  @Get(':id/interested-buyers')
+  interested(@Param('id') id: string) {
+    return this.assetsService.findInterestedLeads(+id);
   }
 }

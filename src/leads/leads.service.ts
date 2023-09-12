@@ -12,6 +12,7 @@ import { Op } from 'sequelize';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
 import Employee from 'src/employees/entities/employee.entity';
+import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
 
 @Injectable()
 export class LeadsService {
@@ -237,5 +238,45 @@ export class LeadsService {
     await lead.destroy();
 
     return { message: 'Lead deleted successfully' };
+  }
+
+  async findIterestedProperties(id: number) {
+    const lead = await Lead.findByPk(id);
+
+    if (!lead) {
+      throw new NotFoundException('Lead not found');
+    }
+
+    return {
+      message: 'Interested properties found',
+      data: (await lead.$get('interested_properties')) || [],
+    };
+  }
+
+  async addIterestedProperties(id: number, property_id: number) {
+    try {
+      await InterestedBuyers.create({
+        lead_id: id,
+        asset_id: property_id,
+      });
+      return {
+        message: 'Interest added successfully',
+      };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
+    }
+  }
+
+  async removeIterestedProperties(id: number) {
+    const lead = await InterestedBuyers.findByPk(id, {
+      paranoid: false,
+    });
+
+    if (!lead) {
+      throw new NotFoundException('Data not found');
+    }
+
+    await lead.destroy({ force: true });
+    return { message: 'Interest deleted permanently' };
   }
 }

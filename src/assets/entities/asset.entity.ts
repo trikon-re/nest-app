@@ -10,12 +10,13 @@ import {
   DeletedAt,
   ForeignKey,
   AllowNull,
-  BeforeUpdate,
-  BeforeCreate,
   BelongsTo,
+  BelongsToMany,
   Default,
 } from 'sequelize-typescript';
+import Lead from 'src/leads/entities/lead.entity';
 import Media from 'src/media/entities/media.entity';
+import InterestedBuyers from './interested_buyers.entity';
 
 @Table({
   tableName: 'asset',
@@ -142,6 +143,9 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column
   'flat.handovered_at': Date;
+
+  @BelongsToMany(() => Lead, () => InterestedBuyers)
+  'interested_buyers': Lead[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

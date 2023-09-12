@@ -13,7 +13,10 @@ import {
   IsEmail,
   Default,
   BelongsTo,
+  BelongsToMany,
 } from 'sequelize-typescript';
+import Asset from 'src/assets/entities/asset.entity';
+import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
 import Employee from 'src/employees/entities/employee.entity';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
@@ -96,6 +99,9 @@ class Lead extends Model<Lead> {
 
   @BelongsTo(() => LeadStatus)
   'status': LeadStatus;
+
+  @BelongsToMany(() => Asset, () => InterestedBuyers)
+  'interested_properties': Asset[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
