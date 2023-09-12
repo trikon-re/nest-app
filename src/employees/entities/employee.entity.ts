@@ -107,6 +107,10 @@ class Employee extends Model<Employee> {
   @Column
   'cv': string;
 
+  @AllowNull
+  @Column
+  'tin': string;
+
   @Default(2)
   @Column
   'max_session': number;

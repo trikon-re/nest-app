@@ -58,6 +58,7 @@ export class EmployeesService {
             'nid_attachment',
             'address',
             'address2',
+            'tin',
             'cv',
           ],
         },
@@ -97,6 +98,7 @@ export class EmployeesService {
       'address',
       'address2',
       'nid_number',
+      'tin',
     ]);
 
     // get filter props
@@ -167,6 +169,7 @@ export class EmployeesService {
       address,
       address2,
       cv,
+      tin,
       display_picture,
     } = updateEmployeeDto;
 
@@ -193,6 +196,7 @@ export class EmployeesService {
       address,
       address2,
       cv,
+      tin,
       display_picture,
     });
 

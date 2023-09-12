@@ -26,6 +26,11 @@ export class CreateEmployeeDto {
   @ApiProperty({
     required: false,
   })
+  tin: string;
+
+  @ApiProperty({
+    required: false,
+  })
   email: string;
 
   @ApiProperty()
