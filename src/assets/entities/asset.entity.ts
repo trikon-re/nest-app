@@ -56,6 +56,15 @@ class Asset extends Model<Asset> {
   'media_commision': number;
 
   @AllowNull(false)
+  @Default('New')
+  @Column(DataType.ENUM('New', 'Booked', 'Sold'))
+  'status': string;
+
+  @AllowNull
+  @Column
+  'description': string;
+
+  @AllowNull(false)
   @Column
   'address.line1': string;
 
@@ -66,15 +75,6 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column
   'address.plot': string;
-
-  @AllowNull(false)
-  @Default('New')
-  @Column(DataType.ENUM('New', 'Booked', 'Sold'))
-  'status': string;
-
-  @AllowNull
-  @Column
-  'description': string;
 
   @AllowNull
   @Column
