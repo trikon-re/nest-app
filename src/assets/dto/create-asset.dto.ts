@@ -17,11 +17,19 @@ export class CreateAssetDto {
   @ApiProperty()
   price: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['New', 'Booked', 'Sold'],
+  })
   media_id: number;
 
   @ApiProperty()
   media_commision: number;
+
+  @ApiProperty()
+  status: string;
+
+  @ApiProperty()
+  description: string;
 
   @ApiProperty()
   'address.line1': string;

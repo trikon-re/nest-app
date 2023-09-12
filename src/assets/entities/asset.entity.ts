@@ -12,6 +12,7 @@ import {
   AllowNull,
   BelongsTo,
   BelongsToMany,
+  Default,
 } from 'sequelize-typescript';
 import Lead from 'src/leads/entities/lead.entity';
 import Media from 'src/media/entities/media.entity';
@@ -65,6 +66,15 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column
   'address.plot': string;
+
+  @AllowNull(false)
+  @Default('New')
+  @Column(DataType.ENUM('New', 'Booked', 'Sold'))
+  'status': string;
+
+  @AllowNull
+  @Column
+  'description': string;
 
   @AllowNull
   @Column

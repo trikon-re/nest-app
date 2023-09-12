@@ -24,6 +24,14 @@ export class UpdateAssetDto extends PartialType(CreateAssetDto) {
   @ApiProperty()
   media_commision: number;
 
+  @ApiProperty({
+    enum: ['New', 'Booked', 'Sold'],
+  })
+  status: string;
+
+  @ApiProperty()
+  description: string;
+
   @ApiProperty()
   'address.line1': string;
 
