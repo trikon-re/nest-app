@@ -83,7 +83,7 @@ class Employee extends Model<Employee> {
   @Column
   'salary': number;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @Column
   'bank': string;
 
