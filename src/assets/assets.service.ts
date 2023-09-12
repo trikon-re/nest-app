@@ -17,6 +17,7 @@ export class AssetsService {
       const {
         type,
         size,
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -26,7 +27,7 @@ export class AssetsService {
       await Asset.create({
         type,
         size,
-        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -64,6 +65,19 @@ export class AssetsService {
           [Op.or]: search_ops,
           ...trash_query,
         },
+        include: [
+          {
+            association: 'media',
+            attributes: [
+              'id',
+              'first_name',
+              'last_name',
+              'email',
+              'phone',
+              'gender',
+            ],
+          },
+        ],
         limit,
         offset,
         paranoid,
@@ -94,6 +108,7 @@ export class AssetsService {
       const {
         type,
         size,
+        size_unit,
         price,
         media_id,
         media_commision,
@@ -102,7 +117,7 @@ export class AssetsService {
 
       await asset.update({
         type,
-        size_unit: type === 'FLAT' ? 'SQFT' : 'KATHA',
+        size_unit,
         size,
         price,
         media_id,

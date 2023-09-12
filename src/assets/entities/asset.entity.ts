@@ -12,6 +12,7 @@ import {
   AllowNull,
   BeforeUpdate,
   BeforeCreate,
+  BelongsTo,
 } from 'sequelize-typescript';
 import Media from 'src/media/entities/media.entity';
 
@@ -33,7 +34,7 @@ class Asset extends Model<Asset> {
   'size': number;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.ENUM('SQFT', 'KATHA', 'BIGHA', 'ACRES', 'SHOTOK', 'DECIMAL'))
   'size_unit': string;
 
   @AllowNull(false)
@@ -44,6 +45,9 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column(DataType.BIGINT)
   'media_id': number;
+
+  @BelongsTo(() => Media)
+  'media': Media;
 
   @AllowNull
   @Column
@@ -140,20 +144,6 @@ class Asset extends Model<Asset> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   'deleted_at': Date;
-
-  //hooks
-  @BeforeUpdate
-  @BeforeCreate
-  static async setSizeUnit(instance: Asset) {
-    if (instance.changed('type')) {
-      instance.setDataValue(
-        'size_unit',
-        instance.getDataValue('type') === 'FLAT' ? 'SQFT' : 'KATHA',
-      );
-
-      console.log('hello');
-    }
-  }
 }
 
 export default Asset;

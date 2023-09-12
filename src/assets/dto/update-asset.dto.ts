@@ -10,6 +10,11 @@ export class UpdateAssetDto extends PartialType(CreateAssetDto) {
   @ApiProperty()
   size: number;
 
+  @ApiProperty({
+    enum: ['SQFT', 'KATHA', 'BIGHA', 'ACRES', 'SHOTOK', 'DECIMAL'],
+  })
+  size_unit: string;
+
   @ApiProperty()
   price: number;
 
