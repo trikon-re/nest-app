@@ -96,4 +96,27 @@ export class LeadsController {
   ) {
     return this.leadsService.remove(+id, permanent, restore);
   }
+
+  @Get(':id/interested-properties')
+  interested(@Param('id') id: string) {
+    return this.leadsService.findIterestedProperties(+id);
+  }
+
+  @Post(':id/interested-properties')
+  @ApiQuery({
+    name: 'property_id',
+    type: 'number',
+    required: true,
+  })
+  add_interested(
+    @Param('id') id: string,
+    @Query('property_id') property_id: number,
+  ) {
+    return this.leadsService.addIterestedProperties(+id, property_id);
+  }
+
+  @Delete(':association_id/interested-properties')
+  delete_interested(@Param('association_id') id: string) {
+    return this.leadsService.removeIterestedProperties(+id);
+  }
 }

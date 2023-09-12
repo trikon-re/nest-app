@@ -155,4 +155,17 @@ export class AssetsService {
 
     return { message: 'Asset deleted successfully' };
   }
+
+  async findInterestedLeads(id: number) {
+    const asset = await Asset.findByPk(id);
+
+    if (!asset) {
+      throw new NotFoundException('Asset not found');
+    }
+
+    return {
+      message: 'Interested buyers found',
+      data: (await asset.$get('interested_buyers')) || [],
+    };
+  }
 }
