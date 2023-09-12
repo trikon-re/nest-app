@@ -12,6 +12,7 @@ import {
   AllowNull,
   BeforeUpdate,
   BeforeCreate,
+  BelongsTo,
 } from 'sequelize-typescript';
 import Media from 'src/media/entities/media.entity';
 
@@ -44,6 +45,9 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column(DataType.BIGINT)
   'media_id': number;
+
+  @BelongsTo(() => Media)
+  'media': Media;
 
   @AllowNull
   @Column

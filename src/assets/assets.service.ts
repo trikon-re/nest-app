@@ -64,6 +64,19 @@ export class AssetsService {
           [Op.or]: search_ops,
           ...trash_query,
         },
+        include: [
+          {
+            association: 'media',
+            attributes: [
+              'id',
+              'first_name',
+              'last_name',
+              'email',
+              'phone',
+              'gender',
+            ],
+          },
+        ],
         limit,
         offset,
         paranoid,
