@@ -10,8 +10,6 @@ import {
   DeletedAt,
   ForeignKey,
   AllowNull,
-  BeforeUpdate,
-  BeforeCreate,
   BelongsTo,
   Default,
 } from 'sequelize-typescript';
@@ -142,6 +140,26 @@ class Asset extends Model<Asset> {
   @AllowNull
   @Column
   'flat.handovered_at': Date;
+
+  @AllowNull
+  @Column
+  'private_price': number;
+
+  @AllowNull
+  @Column
+  'completion_status': string;
+
+  @AllowNull
+  @Column
+  'remarks': string;
+
+  @AllowNull
+  @Column
+  'title': string;
+
+  @AllowNull
+  @Column
+  'is_land_share': boolean;
 
   @CreatedAt
   @Column({ field: 'created_at' })
