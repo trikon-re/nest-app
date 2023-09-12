@@ -25,5 +25,11 @@ export class UpdateAuthDto {
   bank?: string;
 
   @ApiProperty()
+  nid_number?: string;
+
+  @ApiProperty()
+  nid_attachment?: string;
+
+  @ApiProperty()
   address?: string;
 }

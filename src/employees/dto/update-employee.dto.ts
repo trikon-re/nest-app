@@ -1,6 +1,5 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { CreateEmployeeDto } from './create-employee.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty({
@@ -69,6 +68,16 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
     required: false,
   })
   bank: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  nid_number: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  nid_attachment: string;
 
   @ApiProperty({
     required: false,
