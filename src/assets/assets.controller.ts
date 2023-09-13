@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Body,
   Patch,
   Param,
@@ -36,6 +35,12 @@ export class AssetsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'type',
+    type: 'string',
+    enum: ['FLAT', 'LAND'],
+    required: false,
+  })
   // Pagination Queries
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
@@ -43,8 +48,8 @@ export class AssetsController {
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(@Query() query: IPaginationQuery) {
-    return this.assetsService.findAll(query);
+  findAll(@Query() query: IPaginationQuery, @Query('type') type?: string) {
+    return this.assetsService.findAll(query, type);
   }
 
   @Get(':id')

@@ -2,7 +2,6 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -52,7 +51,7 @@ export class AuthGuard implements CanActivate {
     });
 
     if (!employee)
-      throw new NotFoundException(
+      throw new UnauthorizedException(
         'No user found. Contact administration about your account.',
       );
 

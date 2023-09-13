@@ -63,6 +63,7 @@ export class LeadsService {
     gender?: string,
     priority?: string,
     status_id?: number,
+    assigned_to?: number,
   ) {
     const pagination = new Pagination(query);
 
@@ -86,6 +87,7 @@ export class LeadsService {
       gender,
       priority,
       status_id,
+      assigned_to,
     });
 
     return pagination.arrange(
@@ -196,6 +198,8 @@ export class LeadsService {
       media_id,
       media_commision,
       gender,
+      assigned_to,
+      status_id,
     } = updateLeadDto;
 
     await lead.update({
@@ -211,6 +215,8 @@ export class LeadsService {
       media_id,
       media_commision,
       gender,
+      assigned_to,
+      status_id,
     });
 
     return { message: 'Lead updated successfully' };

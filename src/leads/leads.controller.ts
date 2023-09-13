@@ -52,6 +52,11 @@ export class LeadsController {
     type: 'number',
     required: false,
   })
+  @ApiQuery({
+    name: 'assigned_to',
+    type: 'number',
+    required: false,
+  })
   // Pagination Queries
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
@@ -64,8 +69,15 @@ export class LeadsController {
     @Query('gender') gender?: string,
     @Query('priority') priority?: string,
     @Query('status_id') status_id?: number,
+    @Query('assigned_to') assigned_to?: number,
   ) {
-    return this.leadsService.findAll(query, gender, priority, status_id);
+    return this.leadsService.findAll(
+      query,
+      gender,
+      priority,
+      status_id,
+      assigned_to,
+    );
   }
 
   @Get(':id')

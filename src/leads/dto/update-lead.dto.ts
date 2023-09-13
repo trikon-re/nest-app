@@ -42,4 +42,10 @@ export class UpdateLeadDto extends PartialType(CreateLeadDto) {
 
   @ApiProperty()
   'media_commision': number;
+
+  @ApiProperty()
+  'assigned_to': number;
+
+  @ApiProperty()
+  'status_id': number;
 }

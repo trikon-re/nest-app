@@ -100,6 +100,9 @@ class Lead extends Model<Lead> {
   @BelongsTo(() => LeadStatus)
   'status': LeadStatus;
 
+  @Column(DataType.DATEONLY)
+  'followup_date': Date;
+
   @BelongsToMany(() => Asset, () => InterestedBuyers)
   'interested_properties': Asset[];
 

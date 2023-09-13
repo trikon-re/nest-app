@@ -44,7 +44,7 @@ export class AssetsService {
     }
   }
 
-  async findAll(query: IPaginationQuery) {
+  async findAll(query: IPaginationQuery, type?: string) {
     const pagination = new Pagination(query);
 
     // get query from pagination
@@ -63,10 +63,15 @@ export class AssetsService {
       'address.country',
     ]);
 
+    const filters = pagination.format_filters({
+      type,
+    });
+
     return pagination.arrange(
       await Asset.findAndCountAll({
         where: {
           [Op.or]: search_ops,
+          ...filters,
           ...trash_query,
         },
         include: [

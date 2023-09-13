@@ -8,6 +8,7 @@ import {
   Model,
   PrimaryKey,
   Table,
+  Unique,
   UpdatedAt,
 } from 'sequelize-typescript';
 import Asset from './asset.entity';
@@ -22,10 +23,12 @@ class InterestedBuyers extends Model<InterestedBuyers> {
   @Column(DataType.BIGINT)
   'id': number;
 
+  @Unique(false)
   @ForeignKey(() => Asset)
   @Column(DataType.BIGINT)
   asset_id: number;
 
+  @Unique(false)
   @ForeignKey(() => Lead)
   @Column(DataType.BIGINT)
   lead_id: number;
