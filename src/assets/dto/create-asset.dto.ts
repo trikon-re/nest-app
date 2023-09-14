@@ -44,6 +44,9 @@ export class CreateAssetDto {
   is_land_share: boolean;
 
   @ApiProperty()
+  land_type: string;
+
+  @ApiProperty()
   private_price: number;
 
   @ApiProperty()

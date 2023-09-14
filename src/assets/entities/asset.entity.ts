@@ -164,6 +164,10 @@ class Asset extends Model<Asset> {
 
   @AllowNull
   @Column
+  'land_type': string;
+
+  @AllowNull
+  @Column
   'is_land_share': boolean;
 
   @CreatedAt

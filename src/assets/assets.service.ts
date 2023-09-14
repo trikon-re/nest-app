@@ -26,6 +26,7 @@ export class AssetsService {
         remarks,
         title,
         is_land_share,
+        land_type,
         private_price,
         media_commision,
         ...address_and_flat
@@ -43,6 +44,7 @@ export class AssetsService {
         remarks,
         title,
         is_land_share,
+        land_type,
         private_price,
         media_commision,
         ...address_and_flat,
@@ -137,6 +139,7 @@ export class AssetsService {
         remarks,
         title,
         is_land_share,
+        land_type,
         private_price,
         media_commision,
         ...address_and_flat
@@ -154,6 +157,7 @@ export class AssetsService {
         remarks,
         title,
         is_land_share,
+        land_type,
         private_price,
         media_commision,
         ...address_and_flat,
