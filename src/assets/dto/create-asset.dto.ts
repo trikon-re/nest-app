@@ -20,13 +20,13 @@ export class CreateAssetDto {
   @ApiProperty({
     enum: ['New', 'Booked', 'Sold'],
   })
+  status: string;
+
+  @ApiProperty()
   media_id: number;
 
   @ApiProperty()
   media_commision: number;
-
-  @ApiProperty()
-  status: string;
 
   @ApiProperty()
   description: string;
