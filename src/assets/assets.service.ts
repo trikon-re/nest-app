@@ -22,6 +22,11 @@ export class AssetsService {
         description,
         status,
         media_id,
+        completion_status,
+        remarks,
+        title,
+        is_land_share,
+        private_price,
         media_commision,
         ...address_and_flat
       } = createAssetDto;
@@ -34,6 +39,11 @@ export class AssetsService {
         description,
         status,
         media_id,
+        completion_status,
+        remarks,
+        title,
+        is_land_share,
+        private_price,
         media_commision,
         ...address_and_flat,
       });
@@ -123,6 +133,11 @@ export class AssetsService {
         description,
         status,
         media_id,
+        completion_status,
+        remarks,
+        title,
+        is_land_share,
+        private_price,
         media_commision,
         ...address_and_flat
       } = updateAssetDto;
@@ -135,6 +150,11 @@ export class AssetsService {
         description,
         status,
         media_id,
+        completion_status,
+        remarks,
+        title,
+        is_land_share,
+        private_price,
         media_commision,
         ...address_and_flat,
       });

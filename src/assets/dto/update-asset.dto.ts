@@ -33,6 +33,21 @@ export class UpdateAssetDto extends PartialType(CreateAssetDto) {
   description: string;
 
   @ApiProperty()
+  completion_status: string;
+
+  @ApiProperty()
+  remarks: string;
+
+  @ApiProperty()
+  title: string;
+
+  @ApiProperty()
+  is_land_share: boolean;
+
+  @ApiProperty()
+  private_price: number;
+
+  @ApiProperty()
   'address.line1': string;
 
   @ApiProperty()

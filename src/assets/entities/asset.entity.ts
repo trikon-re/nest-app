@@ -146,6 +146,25 @@ class Asset extends Model<Asset> {
 
   @BelongsToMany(() => Lead, () => InterestedBuyers)
   'interested_buyers': Lead[];
+  @AllowNull
+  @Column
+  'private_price': number;
+
+  @AllowNull
+  @Column
+  'completion_status': string;
+
+  @AllowNull
+  @Column
+  'remarks': string;
+
+  @AllowNull
+  @Column
+  'title': string;
+
+  @AllowNull
+  @Column
+  'is_land_share': boolean;
 
   @CreatedAt
   @Column({ field: 'created_at' })
