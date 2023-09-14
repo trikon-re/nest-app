@@ -197,7 +197,6 @@ export class LeadsService {
       priority,
       media_id,
       media_commision,
-      assigned_to,
       gender,
       assigned_to,
       status_id,
@@ -217,7 +216,6 @@ export class LeadsService {
       media_commision,
       assigned_to,
       gender,
-      assigned_to,
       status_id,
     });
 
