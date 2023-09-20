@@ -12,7 +12,6 @@ import {
   Default,
   BelongsTo,
   Model,
-  AfterCreate,
 } from 'sequelize-typescript';
 import Lead from '../../leads/entities/lead.entity';
 import Employee from 'src/employees/entities/employee.entity';
@@ -77,16 +76,16 @@ class LeadLog extends Model<LeadLog> {
   @Column({ field: 'deleted_at' })
   'deleted_at': Date;
 
-  @AfterCreate
-  static async createLeadLog(lead: Lead) {
-    const leadLog = await LeadLog.create({
-      type: 'log',
-      lead_id: lead.id,
-      message: 'created lead',
-      author_id: lead.assigned_to,
-    });
-    return leadLog;
-  }
+  // @AfterCreate
+  // static async createLeadLog(lead: Lead) {
+  //   const leadLog = await LeadLog.create({
+  //     type: 'log',
+  //     lead_id: lead.id,
+  //     message: 'created lead',
+  //     author_id: lead.assigned_to,
+  //   });
+  //   return leadLog;
+  // }
 }
 
 export default LeadLog;

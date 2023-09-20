@@ -15,6 +15,7 @@ import {
   BelongsTo,
   BelongsToMany,
   AfterCreate,
+  AfterUpdate,
 } from 'sequelize-typescript';
 import Asset from 'src/assets/entities/asset.entity';
 import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
@@ -143,13 +144,31 @@ class Lead extends Model<Lead> {
 
   @AfterCreate
   static async createLeadLog(lead: Lead) {
-    const leadLog = await LeadLog.create({
-      type: 'log',
-      lead_id: lead.id,
-      message: 'Lead Created',
-      author_id: lead.assigned_to,
-    });
-    return leadLog;
+    try {
+      await LeadLog.create({
+        type: 'log',
+        lead_id: lead.dataValues.id,
+        message: 'Lead Created',
+        author_id: lead.dataValues.created_by_id,
+      });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  @AfterUpdate
+  static async updateLeadLog(lead: Lead) {
+    try {
+      console.log(lead);
+      // await LeadLog.create({
+      //   type: 'log',
+      //   lead_id: lead.dataValues.id,
+      //   message: 'Lead Updated',
+      //   author_id: lead.dataValues.updated_by_id,
+      // });
+    } catch (error) {
+      console.warn(error);
+    }
   }
 }
 
