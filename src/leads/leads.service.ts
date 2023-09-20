@@ -16,7 +16,7 @@ import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
 
 @Injectable()
 export class LeadsService {
-  async create(createLeadDto: CreateLeadDto) {
+  async create(createLeadDto: CreateLeadDto, author: any) {
     try {
       const {
         first_name,
@@ -50,6 +50,7 @@ export class LeadsService {
         assigned_to,
         gender,
         status_id,
+        created_by_id: author?.id,
       });
 
       return { message: 'Lead created successfully' };

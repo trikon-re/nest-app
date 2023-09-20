@@ -12,8 +12,10 @@ import {
   Default,
   BelongsTo,
   Model,
+  AfterCreate,
 } from 'sequelize-typescript';
 import Lead from '../../leads/entities/lead.entity';
+import Employee from 'src/employees/entities/employee.entity';
 
 @Table({
   tableName: 'lead_log',
@@ -46,6 +48,23 @@ class LeadLog extends Model<LeadLog> {
   @BelongsTo(() => Lead)
   'lead': Lead;
 
+  @Column
+  'message': string;
+
+  @Column
+  'note': string;
+
+  @Column
+  'conversation': string;
+
+  @AllowNull(false)
+  @ForeignKey(() => Employee)
+  @Column(DataType.BIGINT)
+  'author_id': number;
+
+  @BelongsTo(() => Employee)
+  'author': Employee;
+
   @CreatedAt
   @Column({ field: 'created_at' })
   'created_at': Date;
@@ -57,6 +76,17 @@ class LeadLog extends Model<LeadLog> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   'deleted_at': Date;
+
+  @AfterCreate
+  static async createLeadLog(lead: Lead) {
+    const leadLog = await LeadLog.create({
+      type: 'log',
+      lead_id: lead.id,
+      message: 'created lead',
+      author_id: lead.assigned_to,
+    });
+    return leadLog;
+  }
 }
 
 export default LeadLog;

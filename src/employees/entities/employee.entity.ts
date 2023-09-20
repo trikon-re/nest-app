@@ -18,6 +18,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
+import Lead from 'src/leads/entities/lead.entity';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 import Role from 'src/roles/entities/role.entity';
@@ -134,6 +135,18 @@ class Employee extends Model<Employee> {
 
   @HasMany(() => Session)
   'sessions': Session[];
+
+  @HasMany(() => Lead, 'assigned_to_id')
+  'assigned_leads': Lead[];
+
+  @HasMany(() => Lead, 'created_by_id')
+  'created_leads': Lead[];
+
+  @HasMany(() => Lead, 'updated_by_id')
+  'updated_leads': Lead[];
+
+  @HasMany(() => Lead, 'deleted_by_id')
+  'deleted_leads': Lead[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

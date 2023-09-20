@@ -14,10 +14,12 @@ import {
   Default,
   BelongsTo,
   BelongsToMany,
+  AfterCreate,
 } from 'sequelize-typescript';
 import Asset from 'src/assets/entities/asset.entity';
 import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
 import Employee from 'src/employees/entities/employee.entity';
+import LeadLog from 'src/lead_log/entities/lead_log.entity';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
 
@@ -106,6 +108,27 @@ class Lead extends Model<Lead> {
   @BelongsToMany(() => Asset, () => InterestedBuyers)
   'interested_properties': Asset[];
 
+  @ForeignKey(() => Employee)
+  @Column(DataType.BIGINT)
+  'created_by_id': number;
+
+  @BelongsTo(() => Employee)
+  'created_by': Employee;
+
+  @ForeignKey(() => Employee)
+  @Column(DataType.BIGINT)
+  'updated_by_id': number;
+
+  @BelongsTo(() => Employee)
+  'updated_by': Employee;
+
+  @ForeignKey(() => Employee)
+  @Column(DataType.BIGINT)
+  'deleted_by_id': number;
+
+  @BelongsTo(() => Employee)
+  'deleted_by': Employee;
+
   @CreatedAt
   @Column({ field: 'created_at' })
   'created_at': Date;
@@ -117,6 +140,17 @@ class Lead extends Model<Lead> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   'deleted_at': Date;
+
+  @AfterCreate
+  static async createLeadLog(lead: Lead) {
+    const leadLog = await LeadLog.create({
+      type: 'log',
+      lead_id: lead.id,
+      message: 'Lead Created',
+      author_id: lead.assigned_to,
+    });
+    return leadLog;
+  }
 }
 
 export default Lead;
