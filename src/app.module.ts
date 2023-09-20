@@ -17,6 +17,7 @@ import { MediaModule } from './media/media.module';
 import { LeadStatusModule } from './lead_status/lead_status.module';
 import { LeadsModule } from './leads/leads.module';
 import { AssetsModule } from './assets/assets.module';
+import { LeadLogModule } from './lead_log/lead_log.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { AssetsModule } from './assets/assets.module';
     LeadStatusModule,
     LeadsModule,
     AssetsModule,
+    LeadLogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

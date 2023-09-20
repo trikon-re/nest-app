@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Query,
+  Put,
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
@@ -107,6 +108,11 @@ export class LeadsController {
     @Query('restore') restore?: boolean,
   ) {
     return this.leadsService.remove(+id, permanent, restore);
+  }
+
+  @Put(':id')
+  addFlag(@Param('id') id: string) {
+    return this.leadsService.findOne(+id);
   }
 
   @Get(':id/interested-properties')
