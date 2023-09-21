@@ -18,6 +18,7 @@ import { LeadStatusModule } from './lead_status/lead_status.module';
 import { LeadsModule } from './leads/leads.module';
 import { AssetsModule } from './assets/assets.module';
 import { LeadLogModule } from './lead_log/lead_log.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { LeadLogModule } from './lead_log/lead_log.module';
     LeadsModule,
     AssetsModule,
     LeadLogModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],

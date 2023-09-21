@@ -10,7 +10,9 @@ import {
   DeletedAt,
   ForeignKey,
   AllowNull,
+  HasMany,
 } from 'sequelize-typescript';
+import Lead from 'src/leads/entities/lead.entity';
 
 @Table({
   tableName: 'lead_status',
@@ -41,6 +43,9 @@ class LeadStatus extends Model<LeadStatus> {
   @AllowNull
   @Column(DataType.BIGINT)
   'from_status': number;
+
+  @HasMany(() => Lead)
+  'leads': Lead[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
