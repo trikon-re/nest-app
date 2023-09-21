@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   Table,
   Column,
@@ -148,7 +149,7 @@ class Lead extends Model<Lead> {
       await LeadLog.create({
         type: 'log',
         lead_id: lead.dataValues.id,
-        message: 'Lead Created',
+        message: 'created lead',
         author_id: lead.dataValues.created_by_id,
       });
     } catch (error) {
@@ -159,13 +160,129 @@ class Lead extends Model<Lead> {
   @AfterUpdate
   static async updateLeadLog(lead: Lead) {
     try {
-      console.log(lead);
-      // await LeadLog.create({
-      //   type: 'log',
-      //   lead_id: lead.dataValues.id,
-      //   message: 'Lead Updated',
-      //   author_id: lead.dataValues.updated_by_id,
-      // });
+      // eslint-disable-next-line no-var
+      var changed_fields = lead.changed();
+      if (!changed_fields || changed_fields.length === 0) return;
+
+      changed_fields = changed_fields.flatMap(
+        (field) => field !== 'updated_by_id' && field,
+      );
+
+      if (changed_fields.length === 0) return;
+
+      // if status is changed
+      if (changed_fields?.includes?.('status_id')) {
+        // Check if status is changed or created
+        if (lead.previous('status_id')) {
+          // find previous status
+          const lead_status = await LeadStatus.findByPk(
+            lead.previous().get('status_id'),
+          );
+          // create log
+          await LeadLog.create({
+            type: 'status',
+            lead_id: lead.dataValues.id,
+            message: `changed the status from ${lead_status.get('label')} to ${(
+              await lead.$get('status')
+            ).get('label')}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        } else {
+          // create log for new status
+          await LeadLog.create({
+            type: 'status',
+            lead_id: lead.dataValues.id,
+            message: `flagged with the status ${(
+              await lead.$get('status')
+            ).get('label')}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        }
+        // remove status from changed fields
+        changed_fields = changed_fields.flatMap(
+          (field) => field !== 'status_id' && field,
+        );
+      }
+
+      // if assignee is changed
+      if (changed_fields?.includes?.('assigned_to')) {
+        // Check if assignee is changed or created
+        if (lead.previous('assigned_to')) {
+          // find previous assignee
+          const assignee = await Employee.findByPk(
+            lead.previous().get('assigned_to'),
+          );
+          // create log
+          await LeadLog.create({
+            type: 'assign',
+            lead_id: lead.dataValues.id,
+            message: `changed the assignee from ${assignee.get(
+              'first_name',
+            )} ${assignee.get('last_name')} to ${(
+              await lead.$get('assignee')
+            ).get('first_name')} ${(
+              await lead.$get('assignee')
+            ).get('last_name')}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        } else {
+          // create log for new assignee
+          await LeadLog.create({
+            type: 'assign',
+            lead_id: lead.dataValues.id,
+            message: `assigned to ${(
+              await lead.$get('assignee')
+            ).get('first_name')} ${(
+              await lead.$get('assignee')
+            ).get('last_name')}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        }
+
+        // remove assignee from changed fields
+        changed_fields = changed_fields.flatMap(
+          (field) => field !== 'assigned_to' && field,
+        );
+      }
+
+      // if followup is changed
+      if (changed_fields?.includes?.('followup_date')) {
+        // Check if followup is changed or created
+        if (lead.previous('followup_date')) {
+          // create log
+          await LeadLog.create({
+            type: 'followup',
+            lead_id: lead.dataValues.id,
+            message: `changed the followup date from ${moment(
+              lead.previous('followup_date'),
+            ).format('lll')} to ${moment(lead.get('followup_date')).format(
+              'lll',
+            )}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        } else {
+          // create log for new followup
+          await LeadLog.create({
+            type: 'followup',
+            lead_id: lead.dataValues.id,
+            message: `added followup date on ${moment(
+              lead.get('followup_date'),
+            ).format('lll')}`,
+            author_id: lead.dataValues.updated_by_id,
+          });
+        }
+        // remove followup from changed fields
+        changed_fields = changed_fields.flatMap(
+          (field) => field !== 'followup_date' && field,
+        );
+      }
+
+      await LeadLog.create({
+        type: 'log',
+        lead_id: lead.dataValues.id,
+        message: `updated ${changed_fields.join(', ')} of lead`,
+        author_id: lead.dataValues.updated_by_id,
+      });
     } catch (error) {
       console.warn(error);
     }

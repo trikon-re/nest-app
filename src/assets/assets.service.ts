@@ -56,7 +56,7 @@ export class AssetsService {
     }
   }
 
-  async findAll(query: IPaginationQuery, type?: string) {
+  async findAll(query: IPaginationQuery, type?: string, status?: string) {
     const pagination = new Pagination(query);
 
     // get query from pagination
@@ -77,6 +77,7 @@ export class AssetsService {
 
     const filters = pagination.format_filters({
       type,
+      status,
     });
 
     return pagination.arrange(

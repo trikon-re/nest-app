@@ -179,7 +179,7 @@ export class LeadsService {
     return { message: 'Lead found', data: lead };
   }
 
-  async update(id: number, updateLeadDto: UpdateLeadDto) {
+  async update(id: number, updateLeadDto: UpdateLeadDto, user?: any) {
     const lead = await Lead.findByPk(id);
 
     if (!lead) {
@@ -218,6 +218,7 @@ export class LeadsService {
       assigned_to,
       gender,
       status_id,
+      updated_by_id: user?.id,
     });
 
     return { message: 'Lead updated successfully' };

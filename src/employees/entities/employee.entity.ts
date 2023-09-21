@@ -136,7 +136,7 @@ class Employee extends Model<Employee> {
   @HasMany(() => Session)
   'sessions': Session[];
 
-  @HasMany(() => Lead, 'assigned_to_id')
+  @HasMany(() => Lead, 'assigned_to')
   'assigned_leads': Lead[];
 
   @HasMany(() => Lead, 'created_by_id')

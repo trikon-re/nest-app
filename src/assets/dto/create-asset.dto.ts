@@ -18,7 +18,7 @@ export class CreateAssetDto {
   price: number;
 
   @ApiProperty({
-    enum: ['New', 'Booked', 'Sold'],
+    enum: ['Latest', 'In Progress', 'Booked', 'Sold', 'Cancelled'],
   })
   status: string;
 

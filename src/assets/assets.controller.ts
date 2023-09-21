@@ -41,6 +41,12 @@ export class AssetsController {
     enum: ['FLAT', 'LAND'],
     required: false,
   })
+  @ApiQuery({
+    name: 'status',
+    type: 'string',
+    enum: ['Latest', 'In Progress', 'Booked', 'Sold', 'Cancelled'],
+    required: false,
+  })
   // Pagination Queries
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
@@ -48,8 +54,12 @@ export class AssetsController {
   @ApiQuery(PageQuery)
   @ApiQuery(LimitQuery)
   @ApiQuery(SearchQuery)
-  findAll(@Query() query: IPaginationQuery, @Query('type') type?: string) {
-    return this.assetsService.findAll(query, type);
+  findAll(
+    @Query() query: IPaginationQuery,
+    @Query('type') type?: string,
+    @Query('status') status?: string,
+  ) {
+    return this.assetsService.findAll(query, type, status);
   }
 
   @Get(':id')

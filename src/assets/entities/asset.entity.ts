@@ -56,8 +56,8 @@ class Asset extends Model<Asset> {
   'media_commision': number;
 
   @AllowNull(false)
-  @Default('New')
-  @Column(DataType.ENUM('New', 'Booked', 'Sold'))
+  @Default('Latest')
+  @Column(DataType.ENUM('Latest', 'In Progress', 'Booked', 'Sold', 'Cancelled'))
   'status': string;
 
   @AllowNull

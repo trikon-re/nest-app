@@ -94,8 +94,12 @@ export class LeadsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLeadDto: UpdateLeadDto) {
-    return this.leadsService.update(+id, updateLeadDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateLeadDto: UpdateLeadDto,
+    @Request() req: any,
+  ) {
+    return this.leadsService.update(+id, updateLeadDto, req.user);
   }
 
   @ApiBearerAuth()
