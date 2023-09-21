@@ -17,6 +17,12 @@ export class LeadLogService {
         lead_id,
         note,
         conversation,
+        message:
+          type === 'note'
+            ? 'added a note'
+            : type === 'conversation'
+            ? 'added a conversation'
+            : '',
         author_id: author?.id,
       });
 
