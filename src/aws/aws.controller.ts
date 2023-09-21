@@ -16,7 +16,13 @@ export class AwsController {
   constructor(private readonly awsService: AwsService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 1024 * 1024 * 5,
+      },
+    }),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: CreateAwDto,
