@@ -282,8 +282,7 @@ class Lead extends Model<Lead> {
         );
       }
 
-      if (!changed_fields && changed_fields.length === 0) return;
-
+      if (!changed_fields || changed_fields.length === 0) return;
       await LeadLog.create({
         type: 'log',
         lead_id: lead.dataValues.id,
