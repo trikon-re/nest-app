@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
   Table,
   Column,
@@ -24,6 +23,7 @@ import Employee from 'src/employees/entities/employee.entity';
 import LeadLog from 'src/lead_log/entities/lead_log.entity';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
+import * as moment from 'moment';
 
 @Table({
   tableName: 'lead',
@@ -260,8 +260,8 @@ class Lead extends Model<Lead> {
             lead_id: lead.dataValues.id,
             message: `changed the followup date from ${moment(
               lead.previous('followup_date'),
-            ).format('lll')} to ${moment(lead.get('followup_date')).format(
-              'lll',
+            ).format('ll')} to ${moment(lead.get('followup_date')).format(
+              'll',
             )}`,
             author_id: lead.dataValues.updated_by_id,
           });
@@ -272,7 +272,7 @@ class Lead extends Model<Lead> {
             lead_id: lead.dataValues.id,
             message: `added followup date on ${moment(
               lead.get('followup_date'),
-            ).format('lll')}`,
+            ).format('ll')}`,
             author_id: lead.dataValues.updated_by_id,
           });
         }
