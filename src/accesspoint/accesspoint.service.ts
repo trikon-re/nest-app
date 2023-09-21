@@ -45,7 +45,7 @@ export class AccesspointService {
 
   async findAll(query: IPaginationQuery) {
     const pagination = new Pagination(query);
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, order, trash_query } =
       pagination.get_attributes();
     const search_ops = pagination.get_search_ops(['point_name']);
     return pagination.arrange(
@@ -54,7 +54,7 @@ export class AccesspointService {
           [Op.or]: search_ops,
           ...trash_query,
         },
-
+        order,
         limit,
         offset,
         paranoid,

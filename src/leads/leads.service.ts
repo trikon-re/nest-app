@@ -69,7 +69,7 @@ export class LeadsService {
     const pagination = new Pagination(query);
 
     // get query from pagination
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, order, trash_query } =
       pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops([
@@ -130,6 +130,7 @@ export class LeadsService {
           },
         ],
         limit,
+        order,
         offset,
         paranoid,
       }),
