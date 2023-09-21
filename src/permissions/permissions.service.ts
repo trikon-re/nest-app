@@ -44,7 +44,7 @@ export class PermissionsService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, order, trash_query } =
       pagination.get_attributes();
 
     // get filter props
@@ -67,6 +67,7 @@ export class PermissionsService {
         limit,
         offset,
         paranoid,
+        order,
       }),
     );
   }

@@ -69,7 +69,7 @@ export class LeadsService {
     const pagination = new Pagination(query);
 
     // get query from pagination
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, order, trash_query } =
       pagination.get_attributes();
 
     const search_ops = pagination.get_search_ops([
@@ -130,6 +130,7 @@ export class LeadsService {
           },
         ],
         limit,
+        order,
         offset,
         paranoid,
       }),
@@ -177,6 +178,25 @@ export class LeadsService {
     }
 
     return { message: 'Lead found', data: lead };
+  }
+
+  async addFollowup(id: number, date: Date, author?: any) {
+    try {
+      const lead = await Lead.findByPk(id);
+
+      if (!lead) {
+        throw new NotFoundException('Lead not found');
+      }
+
+      await lead.update({
+        followup_date: date || null,
+        updated_by_id: author?.id,
+      });
+
+      return { message: 'Followup added successfully' };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
+    }
   }
 
   async update(id: number, updateLeadDto: UpdateLeadDto, user?: any) {

@@ -46,7 +46,7 @@ export class RolesService {
     const pagination = new Pagination(query);
 
     // get query props
-    const { limit, offset, paranoid, trash_query } =
+    const { limit, offset, paranoid, order, trash_query } =
       pagination.get_attributes();
 
     // get search object
@@ -78,6 +78,7 @@ export class RolesService {
         limit,
         offset,
         paranoid,
+        order,
       }),
     );
   }

@@ -102,8 +102,6 @@ export class LeadsController {
     return this.leadsService.update(+id, updateLeadDto, req.user);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Delete(':id')
   @ApiQuery({
     name: 'permanent',
@@ -126,8 +124,14 @@ export class LeadsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Put(':id')
-  addFlag(@Param('id') id: string) {
-    return this.leadsService.findOne(+id);
+  @ApiQuery({
+    name: 'date',
+    type: 'string',
+    required: true,
+    example: '2023-09-23',
+  })
+  addFlag(@Param('id') id: string, @Query('date') date: Date) {
+    return this.leadsService.addFollowup(+id, date);
   }
 
   @Get(':id/interested-properties')
@@ -135,8 +139,6 @@ export class LeadsController {
     return this.leadsService.findIterestedProperties(+id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Post(':id/interested-properties')
   @ApiQuery({
     name: 'property_id',
@@ -150,8 +152,6 @@ export class LeadsController {
     return this.leadsService.addIterestedProperties(+id, property_id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Delete(':association_id/interested-properties')
   delete_interested(@Param('association_id') id: string) {
     return this.leadsService.removeIterestedProperties(+id);

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
   Table,
   Column,
@@ -24,6 +23,7 @@ import Employee from 'src/employees/entities/employee.entity';
 import LeadLog from 'src/lead_log/entities/lead_log.entity';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
+import * as moment from 'moment';
 
 @Table({
   tableName: 'lead',
@@ -162,10 +162,11 @@ class Lead extends Model<Lead> {
     try {
       // eslint-disable-next-line no-var
       var changed_fields = lead.changed();
+
       if (!changed_fields || changed_fields.length === 0) return;
 
-      changed_fields = changed_fields.flatMap(
-        (field) => field !== 'updated_by_id' && field,
+      changed_fields = changed_fields.filter(
+        (field) => field !== 'updated_by_id',
       );
 
       if (changed_fields.length === 0) return;
@@ -175,9 +176,11 @@ class Lead extends Model<Lead> {
         // Check if status is changed or created
         if (lead.previous('status_id')) {
           // find previous status
-          const lead_status = await LeadStatus.findByPk(
-            lead.previous().get('status_id'),
-          );
+          const lead_status = await LeadStatus.findOne({
+            where: {
+              id: lead.previous('status_id'),
+            },
+          });
           // create log
           await LeadLog.create({
             type: 'status',
@@ -199,8 +202,8 @@ class Lead extends Model<Lead> {
           });
         }
         // remove status from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'status_id' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'status_id',
         );
       }
 
@@ -209,9 +212,11 @@ class Lead extends Model<Lead> {
         // Check if assignee is changed or created
         if (lead.previous('assigned_to')) {
           // find previous assignee
-          const assignee = await Employee.findByPk(
-            lead.previous().get('assigned_to'),
-          );
+          const assignee = await Employee.findOne({
+            where: {
+              id: lead.previous('assigned_to'),
+            },
+          });
           // create log
           await LeadLog.create({
             type: 'assign',
@@ -240,8 +245,8 @@ class Lead extends Model<Lead> {
         }
 
         // remove assignee from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'assigned_to' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'assigned_to',
         );
       }
 
@@ -253,11 +258,20 @@ class Lead extends Model<Lead> {
           await LeadLog.create({
             type: 'followup',
             lead_id: lead.dataValues.id,
-            message: `changed the followup date from ${moment(
-              lead.previous('followup_date'),
-            ).format('lll')} to ${moment(lead.get('followup_date')).format(
-              'lll',
-            )}`,
+            message:
+              lead.previous('followup_date') && lead.get('followup_date')
+                ? `changed the followup date from ${moment(
+                    lead.previous('followup_date'),
+                  ).format('ll')} to ${moment(lead.get('followup_date')).format(
+                    'll',
+                  )}`
+                : lead.previous('followup_date') && !lead.get('followup_date')
+                ? `removed the followup date of ${moment(
+                    lead.previous('followup_date'),
+                  ).format('ll')}`
+                : `added followup date on ${moment(
+                    lead.get('followup_date'),
+                  ).format('ll')}`,
             author_id: lead.dataValues.updated_by_id,
           });
         } else {
@@ -267,16 +281,17 @@ class Lead extends Model<Lead> {
             lead_id: lead.dataValues.id,
             message: `added followup date on ${moment(
               lead.get('followup_date'),
-            ).format('lll')}`,
+            ).format('ll')}`,
             author_id: lead.dataValues.updated_by_id,
           });
         }
         // remove followup from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'followup_date' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'followup_date',
         );
       }
 
+      if (!changed_fields || changed_fields.length === 0) return;
       await LeadLog.create({
         type: 'log',
         lead_id: lead.dataValues.id,
