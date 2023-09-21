@@ -30,7 +30,7 @@ export class LeadLogController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createLeadLogDto: CreateLeadLogDto, @Request() req: any) {
-    return this.leadLogService.create(createLeadLogDto);
+    return this.leadLogService.create(createLeadLogDto, req.user);
   }
 
   @Get()
