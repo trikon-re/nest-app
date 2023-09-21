@@ -162,10 +162,11 @@ class Lead extends Model<Lead> {
     try {
       // eslint-disable-next-line no-var
       var changed_fields = lead.changed();
+
       if (!changed_fields || changed_fields.length === 0) return;
 
-      changed_fields = changed_fields.flatMap(
-        (field) => field !== 'updated_by_id' && field,
+      changed_fields = changed_fields.filter(
+        (field) => field !== 'updated_by_id',
       );
 
       if (changed_fields.length === 0) return;
@@ -175,9 +176,11 @@ class Lead extends Model<Lead> {
         // Check if status is changed or created
         if (lead.previous('status_id')) {
           // find previous status
-          const lead_status = await LeadStatus.findByPk(
-            lead.previous().get('status_id'),
-          );
+          const lead_status = await LeadStatus.findOne({
+            where: {
+              id: lead.previous('status_id'),
+            },
+          });
           // create log
           await LeadLog.create({
             type: 'status',
@@ -199,8 +202,8 @@ class Lead extends Model<Lead> {
           });
         }
         // remove status from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'status_id' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'status_id',
         );
       }
 
@@ -209,9 +212,11 @@ class Lead extends Model<Lead> {
         // Check if assignee is changed or created
         if (lead.previous('assigned_to')) {
           // find previous assignee
-          const assignee = await Employee.findByPk(
-            lead.previous().get('assigned_to'),
-          );
+          const assignee = await Employee.findOne({
+            where: {
+              id: lead.previous('assigned_to'),
+            },
+          });
           // create log
           await LeadLog.create({
             type: 'assign',
@@ -240,8 +245,8 @@ class Lead extends Model<Lead> {
         }
 
         // remove assignee from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'assigned_to' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'assigned_to',
         );
       }
 
@@ -272,10 +277,12 @@ class Lead extends Model<Lead> {
           });
         }
         // remove followup from changed fields
-        changed_fields = changed_fields.flatMap(
-          (field) => field !== 'followup_date' && field,
+        changed_fields = changed_fields.filter(
+          (field) => field !== 'followup_date',
         );
       }
+
+      if (!changed_fields && changed_fields.length === 0) return;
 
       await LeadLog.create({
         type: 'log',
