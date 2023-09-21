@@ -179,7 +179,7 @@ export class LeadsService {
     return { message: 'Lead found', data: lead };
   }
 
-  async addFollowup(id: number, date: Date) {
+  async addFollowup(id: number, date: Date, author?: any) {
     try {
       const lead = await Lead.findByPk(id);
 
@@ -189,6 +189,7 @@ export class LeadsService {
 
       await lead.update({
         followup_date: date,
+        updated_by_id: author?.id,
       });
 
       return { message: 'Followup added successfully' };

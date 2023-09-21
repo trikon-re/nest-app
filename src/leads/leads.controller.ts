@@ -102,8 +102,6 @@ export class LeadsController {
     return this.leadsService.update(+id, updateLeadDto, req.user);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Delete(':id')
   @ApiQuery({
     name: 'permanent',
@@ -141,8 +139,6 @@ export class LeadsController {
     return this.leadsService.findIterestedProperties(+id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Post(':id/interested-properties')
   @ApiQuery({
     name: 'property_id',
@@ -156,8 +152,6 @@ export class LeadsController {
     return this.leadsService.addIterestedProperties(+id, property_id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @Delete(':association_id/interested-properties')
   delete_interested(@Param('association_id') id: string) {
     return this.leadsService.removeIterestedProperties(+id);

@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateLeadLogDto } from './dto/create-lead_log.dto';
-import { UpdateLeadLogDto } from './dto/update-lead_log.dto';
+import LeadLog from './entities/lead_log.entity';
+import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
+import Pagination from 'src/utils/Pagination';
+import { Op } from 'sequelize';
+import Employee from 'src/employees/entities/employee.entity';
 
 @Injectable()
 export class LeadLogService {
-  create(createLeadLogDto: CreateLeadLogDto) {
-    return 'This action adds a new leadLog';
+  async create(createLeadLogDto: CreateLeadLogDto, author?: any) {
+    try {
+      const { type, lead_id, note, conversation } = createLeadLogDto;
+
+      await LeadLog.create({
+        type,
+        lead_id,
+        note,
+        conversation,
+        author_id: author?.id,
+      });
+
+      return { message: 'Lead log created successfully' };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
+    }
   }
 
-  findAll() {
-    return `This action returns all leadLog`;
-  }
+  async findAll(query: IPaginationQuery, lead_id?: number) {
+    const pagination = new Pagination(query);
 
-  findOne(id: number) {
-    return `This action returns a #${id} leadLog`;
-  }
+    // get query from pagination
+    const { limit, offset, paranoid, trash_query, order } =
+      pagination.get_attributes();
 
-  update(id: number, updateLeadLogDto: UpdateLeadLogDto) {
-    return `This action updates a #${id} leadLog`;
-  }
+    const search_ops = pagination.get_search_ops([
+      'note',
+      'conversation',
+      'message',
+    ]);
 
-  remove(id: number) {
-    return `This action removes a #${id} leadLog`;
+    const filters = pagination.format_filters({
+      lead_id,
+    });
+
+    return pagination.arrange(
+      await LeadLog.findAndCountAll({
+        where: {
+          [Op.or]: search_ops,
+          ...filters,
+          ...trash_query,
+        },
+        include: [
+          {
+            model: Employee,
+            as: 'author',
+            attributes: [
+              'id',
+              'first_name',
+              'last_name',
+              'username',
+              'gender',
+              'display_picture',
+            ],
+          },
+        ],
+        order,
+        limit,
+        offset,
+        paranoid,
+      }),
+    );
   }
 }
