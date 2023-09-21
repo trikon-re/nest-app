@@ -258,11 +258,20 @@ class Lead extends Model<Lead> {
           await LeadLog.create({
             type: 'followup',
             lead_id: lead.dataValues.id,
-            message: `changed the followup date from ${moment(
-              lead.previous('followup_date'),
-            ).format('ll')} to ${moment(lead.get('followup_date')).format(
-              'll',
-            )}`,
+            message:
+              lead.previous('followup_date') && lead.get('followup_date')
+                ? `changed the followup date from ${moment(
+                    lead.previous('followup_date'),
+                  ).format('ll')} to ${moment(lead.get('followup_date')).format(
+                    'll',
+                  )}`
+                : lead.previous('followup_date') && !lead.get('followup_date')
+                ? `removed the followup date of ${moment(
+                    lead.previous('followup_date'),
+                  ).format('ll')}`
+                : `added followup date on ${moment(
+                    lead.get('followup_date'),
+                  ).format('ll')}`,
             author_id: lead.dataValues.updated_by_id,
           });
         } else {

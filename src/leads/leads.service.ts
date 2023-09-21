@@ -188,7 +188,7 @@ export class LeadsService {
       }
 
       await lead.update({
-        followup_date: date,
+        followup_date: date || null,
         updated_by_id: author?.id,
       });
 
