@@ -126,8 +126,14 @@ export class LeadsController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Put(':id')
-  addFlag(@Param('id') id: string) {
-    return this.leadsService.findOne(+id);
+  @ApiQuery({
+    name: 'date',
+    type: 'string',
+    required: true,
+    example: '2023-09-23',
+  })
+  addFlag(@Param('id') id: string, @Query('date') date: Date) {
+    return this.leadsService.addFollowup(+id, date);
   }
 
   @Get(':id/interested-properties')

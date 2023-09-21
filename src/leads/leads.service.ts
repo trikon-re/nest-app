@@ -179,6 +179,24 @@ export class LeadsService {
     return { message: 'Lead found', data: lead };
   }
 
+  async addFollowup(id: number, date: Date) {
+    try {
+      const lead = await Lead.findByPk(id);
+
+      if (!lead) {
+        throw new NotFoundException('Lead not found');
+      }
+
+      await lead.update({
+        followup_date: date,
+      });
+
+      return { message: 'Followup added successfully' };
+    } catch (error) {
+      throw new BadRequestException(error?.errors?.[0]?.message || error);
+    }
+  }
+
   async update(id: number, updateLeadDto: UpdateLeadDto, user?: any) {
     const lead = await Lead.findByPk(id);
 
