@@ -201,6 +201,10 @@ class Lead extends Model<Lead> {
             author_id: lead.dataValues.updated_by_id,
           });
         }
+        //if the status is junk then this will be soft deleted
+        if ((await lead.$get('status')).get('type') === 'JUNK') {
+          await lead.destroy();
+        }
         // remove status from changed fields
         changed_fields = changed_fields.filter(
           (field) => field !== 'status_id',
