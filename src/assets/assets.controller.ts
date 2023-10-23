@@ -47,6 +47,44 @@ export class AssetsController {
     enum: ['Latest', 'In Progress', 'Booked', 'Sold', 'Cancelled'],
     required: false,
   })
+  @ApiQuery({
+    name: 'area',
+    type: 'string',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'using_type',
+    type: 'string',
+    enum: ['used', 'new'],
+    required: false,
+  })
+  @ApiQuery({
+    name: 'size_unit',
+    type: 'string',
+    enum: ['SQFT', 'KATHA', 'BIGHA', 'ACRES', 'SHOTOK', 'DECIMAL'],
+    required: false,
+  })
+  @ApiQuery({
+    name: 'max_size',
+    type: 'number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'min_size',
+    type: 'number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'max_budget',
+    type: 'number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'min_budget',
+    type: 'number',
+    required: false,
+  })
+
   // Pagination Queries
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
@@ -58,8 +96,26 @@ export class AssetsController {
     @Query() query: IPaginationQuery,
     @Query('type') type?: string,
     @Query('status') status?: string,
+    @Query('area') area?: string,
+    @Query('using_type') using_type?: string,
+    @Query('size_unit') size_unit?: string,
+    @Query('max_size') max_size?: number,
+    @Query('min_size') min_size?: number,
+    @Query('max_budget') max_budget?: number,
+    @Query('min_budget') min_budget?: number,
   ) {
-    return this.assetsService.findAll(query, type, status);
+    return this.assetsService.findAll(
+      query,
+      type,
+      status,
+      area,
+      using_type,
+      size_unit,
+      +max_budget,
+      +max_size,
+      +min_budget,
+      +min_size,
+    );
   }
 
   @Get(':id')

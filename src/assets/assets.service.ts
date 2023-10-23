@@ -56,7 +56,18 @@ export class AssetsService {
     }
   }
 
-  async findAll(query: IPaginationQuery, type?: string, status?: string) {
+  async findAll(
+    query: IPaginationQuery,
+    type?: string,
+    status?: string,
+    area?: string,
+    using_type?: string,
+    size_unit?: string,
+    max_budget?: number,
+    max_size?: number,
+    min_budget?: number,
+    min_size?: number,
+  ) {
     const pagination = new Pagination(query);
 
     // get query from pagination
@@ -78,6 +89,10 @@ export class AssetsService {
     const filters = pagination.format_filters({
       type,
       status,
+      'address.area': area,
+      'flat.is_used':
+        using_type === 'new' ? false : using_type === 'used' ? true : null,
+      size_unit,
     });
 
     return pagination.arrange(
@@ -86,7 +101,26 @@ export class AssetsService {
           [Op.or]: search_ops,
           ...filters,
           ...trash_query,
+          ...(!isNaN(min_size) || !isNaN(max_size)
+            ? {
+                size: isNaN(min_size)
+                  ? { [Op.lte]: max_size }
+                  : isNaN(max_size)
+                  ? { [Op.gte]: min_size }
+                  : { [Op.between]: [min_size, max_size] },
+              }
+            : {}),
+          ...(!isNaN(min_budget) || !isNaN(max_budget)
+            ? {
+                price: isNaN(min_budget)
+                  ? { [Op.lte]: max_budget }
+                  : isNaN(max_budget)
+                  ? { [Op.gte]: min_budget }
+                  : { [Op.between]: [min_budget, max_budget] },
+              }
+            : {}),
         },
+
         include: [
           {
             association: 'media',
