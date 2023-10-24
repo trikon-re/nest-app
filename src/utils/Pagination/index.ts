@@ -98,7 +98,11 @@ class Pagination {
   public format_filters(filter_object: { [key: string]: any }) {
     const output_object: { [key: string]: any } = {};
     for (const key in filter_object) {
-      if (filter_object[key] !== null && filter_object[key] !== undefined) {
+      if (
+        filter_object[key] !== null &&
+        filter_object[key] !== undefined &&
+        Number.isNaN(filter_object[key]) === false
+      ) {
         output_object[key] = filter_object[key];
       }
     }

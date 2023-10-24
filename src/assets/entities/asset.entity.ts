@@ -146,6 +146,7 @@ class Asset extends Model<Asset> {
 
   @BelongsToMany(() => Lead, () => InterestedBuyers)
   'interested_buyers': Lead[];
+
   @AllowNull
   @Column
   'private_price': number;

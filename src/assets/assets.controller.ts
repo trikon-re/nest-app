@@ -84,6 +84,11 @@ export class AssetsController {
     type: 'number',
     required: false,
   })
+  @ApiQuery({
+    name: 'media_id',
+    type: 'number',
+    required: false,
+  })
 
   // Pagination Queries
   @ApiQuery(TrashQuery)
@@ -103,6 +108,7 @@ export class AssetsController {
     @Query('min_size') min_size?: number,
     @Query('max_budget') max_budget?: number,
     @Query('min_budget') min_budget?: number,
+    @Query('media_id') media_id?: number,
   ) {
     return this.assetsService.findAll(
       query,
@@ -115,6 +121,7 @@ export class AssetsController {
       +max_size,
       +min_budget,
       +min_size,
+      +media_id,
     );
   }
 

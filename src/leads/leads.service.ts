@@ -13,6 +13,7 @@ import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
 import Employee from 'src/employees/entities/employee.entity';
 import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
+import Asset from 'src/assets/entities/asset.entity';
 
 @Injectable()
 export class LeadsService {
@@ -65,6 +66,8 @@ export class LeadsService {
     priority?: string,
     status_id?: number,
     assigned_to?: number,
+    media_id?: number,
+    interested_property_type?: string,
   ) {
     const pagination = new Pagination(query);
 
@@ -89,6 +92,7 @@ export class LeadsService {
       priority,
       status_id,
       assigned_to,
+      media_id,
     });
 
     return pagination.arrange(
@@ -128,6 +132,23 @@ export class LeadsService {
               'display_picture',
             ],
           },
+          // ...(!!interested_property_type
+          //   ? [
+          //       {
+          //         model: Asset,
+          //         // association: 'asset_id',
+          //         as: 'interested_properties',
+          //         required: true,
+          //         through: {
+          //           where: {
+          //             type: {
+          //               [Op.eq]: interested_property_type,
+          //             },
+          //           },
+          //         },
+          //       },
+          //     ]
+          //   : []),
         ],
         limit,
         order,

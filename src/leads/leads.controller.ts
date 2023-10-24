@@ -63,6 +63,18 @@ export class LeadsController {
     type: 'number',
     required: false,
   })
+  @ApiQuery({
+    name: 'media_id',
+    type: 'number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'interested_property_type',
+    type: 'string',
+    enum: ['FLAT', 'LAND'],
+    required: false,
+  })
+
   // Pagination Queries
   @ApiQuery(TrashQuery)
   @ApiQuery(ShowParanoidQuery)
@@ -76,6 +88,8 @@ export class LeadsController {
     @Query('priority') priority?: string,
     @Query('status_id') status_id?: number,
     @Query('assigned_to') assigned_to?: number,
+    @Query('media_id') media_id?: number,
+    @Query('interested_property_type') interested_property_type?: string,
   ) {
     return this.leadsService.findAll(
       query,
@@ -83,6 +97,8 @@ export class LeadsController {
       priority,
       status_id,
       assigned_to,
+      +media_id,
+      interested_property_type,
     );
   }
 

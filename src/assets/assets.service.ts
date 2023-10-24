@@ -67,6 +67,7 @@ export class AssetsService {
     max_size?: number,
     min_budget?: number,
     min_size?: number,
+    media_id?: number,
   ) {
     const pagination = new Pagination(query);
 
@@ -93,6 +94,7 @@ export class AssetsService {
       'flat.is_used':
         using_type === 'new' ? false : using_type === 'used' ? true : null,
       size_unit,
+      media_id,
     });
 
     return pagination.arrange(
