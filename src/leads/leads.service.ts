@@ -8,7 +8,7 @@ import { UpdateLeadDto } from './dto/update-lead.dto';
 import { IPaginationQuery } from 'src/utils/Pagination/dto/query.dto';
 import Lead from './entities/lead.entity';
 import Pagination from 'src/utils/Pagination';
-import { Op } from 'sequelize';
+import { Op, literal } from 'sequelize';
 import LeadStatus from 'src/lead_status/entities/lead_status.entity';
 import Media from 'src/media/entities/media.entity';
 import Employee from 'src/employees/entities/employee.entity';
@@ -132,23 +132,25 @@ export class LeadsService {
               'display_picture',
             ],
           },
-          // ...(!!interested_property_type
-          //   ? [
-          //       {
-          //         model: Asset,
-          //         // association: 'asset_id',
-          //         as: 'interested_properties',
-          //         required: true,
-          //         through: {
-          //           where: {
-          //             type: {
-          //               [Op.eq]: interested_property_type,
-          //             },
-          //           },
-          //         },
-          //       },
-          //     ]
-          //   : []),
+          ...(!!interested_property_type
+            ? [
+                {
+                  model: InterestedBuyers,
+                  as: 'interested_buyers_link',
+                  attributes: [],
+                  include: [
+                    {
+                      model: Asset,
+                      as: 'asset',
+                      attributes: ['id', 'type'],
+                      where: {
+                        type: interested_property_type,
+                      },
+                    },
+                  ],
+                },
+              ]
+            : []),
         ],
         limit,
         order,

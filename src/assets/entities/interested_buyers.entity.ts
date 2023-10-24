@@ -1,5 +1,6 @@
 import {
   AutoIncrement,
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
@@ -32,6 +33,12 @@ class InterestedBuyers extends Model<InterestedBuyers> {
   @ForeignKey(() => Lead)
   @Column(DataType.BIGINT)
   lead_id: number;
+
+  @BelongsTo(() => Asset)
+  asset: Asset;
+
+  @BelongsTo(() => Lead)
+  lead: Lead;
 
   @CreatedAt
   @Column({ field: 'created_at' })

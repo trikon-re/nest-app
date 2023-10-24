@@ -144,7 +144,7 @@ class Asset extends Model<Asset> {
   @Column
   'flat.handovered_at': Date;
 
-  @BelongsToMany(() => Lead, () => InterestedBuyers)
+  @BelongsToMany(() => Lead, () => InterestedBuyers, 'asset_id', 'lead_id')
   'interested_buyers': Lead[];
 
   @AllowNull

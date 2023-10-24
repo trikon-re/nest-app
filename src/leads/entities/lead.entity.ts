@@ -16,6 +16,7 @@ import {
   BelongsToMany,
   AfterCreate,
   AfterUpdate,
+  HasMany,
 } from 'sequelize-typescript';
 import Asset from 'src/assets/entities/asset.entity';
 import InterestedBuyers from 'src/assets/entities/interested_buyers.entity';
@@ -107,8 +108,11 @@ class Lead extends Model<Lead> {
   @Column(DataType.DATEONLY)
   'followup_date': Date;
 
-  @BelongsToMany(() => Asset, () => InterestedBuyers)
+  @BelongsToMany(() => Asset, () => InterestedBuyers, 'lead_id', 'asset_id')
   'interested_properties': Asset[];
+
+  @HasMany(() => InterestedBuyers, 'lead_id')
+  'interested_buyers_link': InterestedBuyers[];
 
   @ForeignKey(() => Employee)
   @Column(DataType.BIGINT)
